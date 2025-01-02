@@ -9,7 +9,6 @@ import {
 } from 'react';
 import classNames from 'classnames';
 
-import { addTodo, updateTodo } from '../../api/todos';
 import { TodosContext } from '../../Contexts/TodosContext/TodosContext';
 import { ErrorContext } from '../../Contexts/ErrorContext/ErrorContext';
 
@@ -20,7 +19,8 @@ type Props = {
 };
 
 export const Header: React.FC<Props> = ({ updateTempTodo }) => {
-  const { setTodos, setProcessedIds, todos } = useContext(TodosContext);
+  const { manageLocalStorage, setProcessedIds, todos } =
+    useContext(TodosContext);
   const { setErrorMessage } = useContext(ErrorContext);
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
@@ -45,80 +45,44 @@ export const Header: React.FC<Props> = ({ updateTempTodo }) => {
 
       setLoading(true);
       const newTodo = {
+        id: +new Date(),
         userId: 2042,
         title: normalizeTitle,
         completed: false,
       };
 
       updateTempTodo({
-        id: 0,
         ...newTodo,
+        id: 0,
       });
 
-      addTodo(newTodo)
-        .then(response => {
-          setTitle('');
-          setTodos(existing => [...existing, response]);
-          setLoading(false);
-        })
-        .catch(() => setErrorMessage('Unable to add a todo'))
-        .finally(() => {
-          setLoading(false);
-          updateTempTodo(null);
-        });
+      try {
+        manageLocalStorage({ action: 'add', newItem: newTodo });
+        setTitle('');
+        setLoading(false);
+      } catch {
+        setErrorMessage('Unable to add a todo');
+      } finally {
+        setLoading(false);
+        updateTempTodo(null);
+      }
     },
     [title],
   );
 
   const handleTotalStatusUpdate = useCallback(() => {
-    if (!allTodosCompleted) {
-      todos.forEach(todo => {
-        if (!todo.completed) {
-          setProcessedIds(existing => [...existing, todo.id]);
-          const toUpdate = { completed: true };
-
-          updateTodo(todo.id, toUpdate)
-            .then(() => {
-              setTodos(existing =>
-                existing.map(el =>
-                  el.id === todo.id
-                    ? { ...el, completed: toUpdate.completed }
-                    : el,
-                ),
-              );
-            })
-            .catch(() => setErrorMessage('Unable to update a todo'))
-            .finally(() => {
-              setProcessedIds(existing =>
-                existing.filter(id => id !== todo.id),
-              );
-            });
-        }
-      });
-    }
-
-    if (allTodosCompleted) {
-      todos.forEach(todo => {
-        setLoading(true);
+    todos.forEach(todo => {
+      if (!todo.completed) {
         setProcessedIds(existing => [...existing, todo.id]);
-        const toUpdate = { completed: false };
+      }
+    });
 
-        updateTodo(todo.id, toUpdate)
-          .then(() => {
-            setTodos(existing =>
-              existing.map(el =>
-                el.id === todo.id
-                  ? { ...el, completed: toUpdate.completed }
-                  : el,
-              ),
-            );
-          })
-          .catch(() => setErrorMessage('Unable to update a todo'))
-          .finally(() => {
-            setLoading(false);
-            setProcessedIds(existing => existing.filter(id => id !== todo.id));
-          });
-      });
+    try {
+      manageLocalStorage({ action: 'updateStatusAll' });
+    } catch {
+      setErrorMessage('Unable to update all todos');
+    } finally {
+      setProcessedIds([]);
     }
   }, [todos]);
 

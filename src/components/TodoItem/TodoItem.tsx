@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 
-import { deleteTodo, updateTodo } from '../../api/todos';
 import { TodosContext } from '../../Contexts/TodosContext/TodosContext';
 import { ErrorContext } from '../../Contexts/ErrorContext/ErrorContext';
 
@@ -17,7 +16,7 @@ type Props = {
   title: string;
 };
 export const TodoItem: React.FC<Props> = ({ todoId, completed, title }) => {
-  const { todos, setTodos, processedIds, setProcessedIds } =
+  const { manageLocalStorage, processedIds, setProcessedIds } =
     useContext(TodosContext);
   const { setErrorMessage } = useContext(ErrorContext);
   const [newTitle, setNewTitle] = useState(title);
@@ -26,15 +25,14 @@ export const TodoItem: React.FC<Props> = ({ todoId, completed, title }) => {
 
   const handleDeleteOneTodo = useCallback(
     (id: number) => {
-      setProcessedIds(existing => [...existing, id]);
-      deleteTodo(id)
-        .then(() => {
-          setTodos(existing => existing.filter(current => current.id !== id));
-        })
-        .catch(() => setErrorMessage('Unable to delete a todo'))
-        .finally(() => {
-          setProcessedIds([]);
-        });
+      try {
+        setProcessedIds(existing => [...existing, id]);
+        manageLocalStorage({ action: 'delete', id: id });
+      } catch {
+        setErrorMessage('Unable to delete a todo');
+      } finally {
+        setProcessedIds([]);
+      }
     },
     [todoId],
   );
@@ -47,7 +45,7 @@ export const TodoItem: React.FC<Props> = ({ todoId, completed, title }) => {
       const isTitleChanged = title !== normalizeNewTitle;
 
       if (!normalizeNewTitle) {
-        handleDeleteOneTodo(id);
+        manageLocalStorage({ action: 'delete', id: id });
 
         return;
       }
@@ -58,24 +56,17 @@ export const TodoItem: React.FC<Props> = ({ todoId, completed, title }) => {
         return;
       }
 
-      const changeItem = todos.find(todo => todo.id === id);
-      const toUpdate = { title: normalizeNewTitle };
-
-      if (changeItem) {
+      try {
         setProcessedIds(existing => [...existing, id]);
-        updateTodo(id, toUpdate)
-          .then(() => {
-            setTodos(existing =>
-              existing.map(el =>
-                el.id === id ? { ...el, title: toUpdate.title } : el,
-              ),
-            );
-            setUpdatingTitle(false);
-          })
-          .catch(() => setErrorMessage('Unable to update a todo'))
-          .finally(() => {
-            setProcessedIds([]);
-          });
+        manageLocalStorage({
+          action: 'updateTitle',
+          id: id,
+          newTitle: normalizeNewTitle,
+        });
+      } catch {
+        setErrorMessage('Unable to update a todo');
+      } finally {
+        setProcessedIds([]);
       }
     },
     [newTitle],
@@ -94,25 +85,13 @@ export const TodoItem: React.FC<Props> = ({ todoId, completed, title }) => {
 
   const handleStatusUpdate = useCallback(
     (id: number) => {
-      setProcessedIds(existing => [...existing, id]);
-
-      const changeItem = todos.find(todo => todo.id === id);
-
-      if (changeItem) {
-        const toUpdate = { completed: !changeItem.completed };
-
-        updateTodo(id, toUpdate)
-          .then(() => {
-            setTodos(existing =>
-              existing.map(el =>
-                el.id === id ? { ...el, completed: toUpdate.completed } : el,
-              ),
-            );
-          })
-          .catch(() => setErrorMessage('Unable to update a todo'))
-          .finally(() => {
-            setProcessedIds([]);
-          });
+      try {
+        setProcessedIds(existing => [...existing, id]);
+        manageLocalStorage({ action: 'updateStatus', id: id });
+      } catch {
+        setErrorMessage('Unable to update a todo');
+      } finally {
+        setProcessedIds([]);
       }
     },
     [completed],
