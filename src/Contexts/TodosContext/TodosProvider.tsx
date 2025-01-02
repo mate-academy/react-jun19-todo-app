@@ -1,24 +1,24 @@
 import React from 'react';
 import { ReactNode, useState } from 'react';
-import { useLocalStorage } from '../../components/Helpers/Helpers';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { Todo } from '../../types/Todo';
+import { TodoStatus } from '../../types/Status';
 
 import { TodosContext } from './TodosContext';
 
 export const TodosProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [todos, getLocalStorageData, manageLocalStorage] =
-    useLocalStorage('todos');
-  const [processedIds, setProcessedIds] = useState<number[]>([]);
+  const [todos, setTodos] = useLocalStorage<Todo[]>('todos', []);
+  const [status, setStatus] = useState<TodoStatus>(TodoStatus.all);
 
   return (
     <TodosContext.Provider
       value={{
         todos,
-        getLocalStorageData,
-        manageLocalStorage,
-        processedIds,
-        setProcessedIds,
+        setTodos,
+        status,
+        setStatus,
       }}
     >
       {children}

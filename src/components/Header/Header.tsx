@@ -1,96 +1,49 @@
 import React from 'react';
-import {
-  useRef,
-  useEffect,
-  useState,
-  useCallback,
-  useMemo,
-  useContext,
-} from 'react';
+import { useRef, useEffect, useState, useContext } from 'react';
 import classNames from 'classnames';
 
 import { TodosContext } from '../../Contexts/TodosContext/TodosContext';
-import { ErrorContext } from '../../Contexts/ErrorContext/ErrorContext';
 
-import { Todo } from '../../types/Todo';
-
-type Props = {
-  updateTempTodo: React.Dispatch<React.SetStateAction<Todo | null>>;
-};
-
-export const Header: React.FC<Props> = ({ updateTempTodo }) => {
-  const { manageLocalStorage, setProcessedIds, todos } =
-    useContext(TodosContext);
-  const { setErrorMessage } = useContext(ErrorContext);
+export const Header = () => {
+  const { todos, setTodos } = useContext(TodosContext);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
-  const allTodosCompleted = useMemo(
-    () => todos.every(todo => todo.completed),
-    [todos],
-  );
+  const allTodosCompleted = todos.every(todo => todo.completed);
   const noTodos = todos.length === 0;
 
-  const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-      const normalizeTitle = title.trim();
+    const normalizeTitle = title.trim();
 
-      if (!normalizeTitle) {
-        setErrorMessage('Title should not be empty');
-
-        return;
-      }
-
-      setLoading(true);
-      const newTodo = {
-        id: +new Date(),
-        userId: 2042,
-        title: normalizeTitle,
-        completed: false,
-      };
-
-      updateTempTodo({
-        ...newTodo,
-        id: 0,
-      });
-
-      try {
-        manageLocalStorage({ action: 'add', newItem: newTodo });
-        setTitle('');
-        setLoading(false);
-      } catch {
-        setErrorMessage('Unable to add a todo');
-      } finally {
-        setLoading(false);
-        updateTempTodo(null);
-      }
-    },
-    [title],
-  );
-
-  const handleTotalStatusUpdate = useCallback(() => {
-    todos.forEach(todo => {
-      if (!todo.completed) {
-        setProcessedIds(existing => [...existing, todo.id]);
-      }
-    });
-
-    try {
-      manageLocalStorage({ action: 'updateStatusAll' });
-    } catch {
-      setErrorMessage('Unable to update all todos');
-    } finally {
-      setProcessedIds([]);
+    if (!normalizeTitle) {
+      return;
     }
-  }, [todos]);
+
+    const newTodo = {
+      id: +new Date(),
+      userId: 2042,
+      title: normalizeTitle,
+      completed: false,
+    };
+
+    setTodos([...todos, newTodo]);
+    setTitle('');
+  };
+
+  const handleTotalStatusUpdate = () => {
+    if (!allTodosCompleted) {
+      setTodos(todos.map(todo => ({ ...todo, completed: true })));
+    } else {
+      setTodos(todos.map(todo => ({ ...todo, completed: false })));
+    }
+  };
 
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [todos, loading]);
+  }, [todos]);
 
   return (
     <header className="todoapp__header">
@@ -106,7 +59,7 @@ export const Header: React.FC<Props> = ({ updateTempTodo }) => {
       )}
 
       {/* Add a todo on form submit */}
-      <form onSubmit={event => handleSubmit(event)}>
+      <form onSubmit={handleSubmit}>
         <input
           ref={inputRef}
           data-cy="NewTodoField"
@@ -115,7 +68,6 @@ export const Header: React.FC<Props> = ({ updateTempTodo }) => {
           placeholder="What needs to be done?"
           value={title}
           onChange={event => setTitle(event.target.value)}
-          disabled={loading}
         />
       </form>
     </header>

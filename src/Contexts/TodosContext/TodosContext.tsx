@@ -1,20 +1,18 @@
 import { createContext } from 'react';
 
 import { Todo } from '../../types/Todo';
-import { ManageTodos } from '../../types/ManageTodos';
+import { TodoStatus } from '../../types/Status';
 
 type Props = {
   todos: Todo[];
-  getLocalStorageData: () => void;
-  manageLocalStorage: ({ action, id, newItem, newTitle }: ManageTodos) => void;
-  processedIds: number[];
-  setProcessedIds: React.Dispatch<React.SetStateAction<number[]>>;
+  setTodos: (todos: Todo[]) => void;
+  status: TodoStatus;
+  setStatus: (status: TodoStatus) => void;
 };
 
 export const TodosContext = createContext<Props>({
   todos: [],
-  getLocalStorageData: () => {},
-  manageLocalStorage: () => {},
-  processedIds: [],
-  setProcessedIds: () => {},
+  setTodos: () => {},
+  status: TodoStatus.all,
+  setStatus: () => {},
 });

@@ -1,48 +1,18 @@
-import React, { useCallback, useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import classNames from 'classnames';
 
-import { deleteTodo } from '../../api/todos';
 import { capitalizeFirstLetter, filterOptions } from '../Helpers/Helpers';
 
 import { TodosContext } from '../../Contexts/TodosContext/TodosContext';
-import { ErrorContext } from '../../Contexts/ErrorContext/ErrorContext';
 
-import { TodoStatus } from '../../types/Status';
+export const Footer = () => {
+  const { todos, setTodos, status, setStatus } = useContext(TodosContext);
+  const activeTodos = todos.filter(todo => !todo.completed);
+  const isAnyCompleted = todos.some(todo => todo.completed);
 
-type Props = {
-  status: TodoStatus;
-  onStatusChange: (status: TodoStatus) => void;
-};
-
-export const Footer: React.FC<Props> = ({ status, onStatusChange }) => {
-  const { todos, setTodos, setProcessedIds } = useContext(TodosContext);
-  const { setErrorMessage } = useContext(ErrorContext);
-  const activeTodos = useMemo(
-    () => todos.filter(todo => !todo.completed),
-    [todos],
-  );
-  const isAnyCompleted = useMemo(
-    () => todos.some(todo => todo.completed),
-    [todos],
-  );
-
-  const handleDeleteCompletedTodos = useCallback(() => {
-    todos.forEach(todo => {
-      if (todo.completed) {
-        setProcessedIds(existing => [...existing, todo.id]);
-        deleteTodo(todo.id)
-          .then(() =>
-            setTodos(existing =>
-              existing.filter(current => current.id !== todo.id),
-            ),
-          )
-          .catch(() => setErrorMessage('Unable to delete a todo'))
-          .finally(() => {
-            setProcessedIds(existing => existing.filter(id => id !== todo.id));
-          });
-      }
-    });
-  }, [todos]);
+  const handleDeleteCompletedTodos = () => {
+    setTodos(todos.filter(todo => !todo.completed));
+  };
 
   return (
     <footer className="todoapp__footer" data-cy="Footer">
@@ -63,7 +33,7 @@ export const Footer: React.FC<Props> = ({ status, onStatusChange }) => {
                 selected: status === option,
               })}
               data-cy={`FilterLink${formattedOption}`}
-              onClick={() => onStatusChange(option)}
+              onClick={() => setStatus(option)}
             >
               {formattedOption}
             </a>
