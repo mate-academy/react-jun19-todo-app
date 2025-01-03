@@ -5,6 +5,7 @@
   ],
   "compilerOptions": {
     "sourceMap": false,
+    "esModuleInterop": true,
     "types": ["node", "cypress"]
   }
 }
