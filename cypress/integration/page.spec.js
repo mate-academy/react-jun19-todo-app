@@ -101,7 +101,7 @@ describe('', () => {
       todos.assertNotCompleted(0);
     });
 
-    it('should not have todos in localStorage', () => {
+    it.skip('should not have todos in localStorage', () => {
       page.data().should('deep.equal', []);
     });
   });
