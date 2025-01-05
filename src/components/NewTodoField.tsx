@@ -19,6 +19,9 @@ export const NewTodoField: React.FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (!title) {
+      return;
+    }
 
     const newTodo: Todo = {
       id: getMaxId(todos) + 1,
