@@ -1,6 +1,7 @@
 import { useTodos } from '../../TodosContext';
 import { Filter } from '../../types/Filter';
 import { filterTodos } from '../../services/Filtering';
+import classNames from 'classnames';
 
 const filters = [
   { label: 'All', value: Filter.All },
@@ -28,7 +29,9 @@ export const Footer = () => {
             <a
               key={value}
               href={`#/${value}`}
-              className={`filter__link ${filter === value ? 'selected' : ''}`}
+              className={classNames('filter__link', {
+                selected: filter === value,
+              })}
               data-cy={`FilterLink${label}`}
               onClick={() => setFilter(value)}
             >
