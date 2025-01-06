@@ -1,6 +1,6 @@
 import { useFilter } from '../context/FilterContext';
 import { useTodos } from '../context/TodosContext';
-import { Filter } from '../utils/constants/Filter';
+import { Filter, FILTER_BY } from '../utils/constants/Filter';
 // eslint-disable-next-line import/extensions
 import { TodoElem } from './TodoElem';
 
@@ -14,9 +14,9 @@ export const TodoList = () => {
 
   const filteredTodos = todos.filter(todo => {
     switch (currentFilter) {
-      case 'active':
+      case FILTER_BY.active:
         return !todo.completed;
-      case 'completed':
+      case FILTER_BY.completed:
         return todo.completed;
       default:
         return todo;
