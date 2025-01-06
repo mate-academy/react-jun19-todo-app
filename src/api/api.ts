@@ -6,6 +6,8 @@ export const getTodos = () => {
   const value = localStorage.getItem(STORAGE_KEY);
 
   if (!value) {
+    localStorage.setItem('todos', JSON.stringify([]));
+
     return [];
   }
 
