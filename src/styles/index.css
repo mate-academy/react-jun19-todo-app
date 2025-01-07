@@ -21,5 +21,5 @@ body {
 }
 
 @import './todoapp';
-@import './todo';
-@import './filter';
+@import './todo-list';
+@import './filters';
