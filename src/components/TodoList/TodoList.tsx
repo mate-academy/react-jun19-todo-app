@@ -2,8 +2,6 @@ import { useAppContext } from '../../context/AppProvider';
 import classNames from 'classnames';
 import { getFilteredItems } from '../../utils/utils';
 import React from 'react';
-// import { Todo } from '../../types/Todo';
-// import { Todo } from '../../types/Todo';
 
 export const TodoList = () => {
   const {
@@ -75,11 +73,11 @@ export const TodoList = () => {
   return (
     <section className="todoapp__main" data-cy="TodoList">
       {/* This is a completed todo */}
-      {filteredTodos.map(todo => (
+      {filteredTodos.map(({ id, title, completed }) => (
         <div
-          key={todo.id}
+          key={id}
           data-cy="Todo"
-          className={classNames('todo', { completed: todo.completed })}
+          className={classNames('todo', { completed: completed })}
         >
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label className="todo__status-label">
@@ -87,29 +85,27 @@ export const TodoList = () => {
               data-cy="TodoStatus"
               type="checkbox"
               className="todo__status"
-              checked={todo.completed}
-              onChange={() => handleCompleted(todo.id)}
+              checked={completed}
+              onChange={() => handleCompleted(id)}
             />
           </label>
 
-          {isEditingId === todo.id ? (
+          {isEditingId === id ? (
             <form
               onSubmit={event => {
                 event.preventDefault();
-                handleSubmit(todo.id);
+                handleSubmit(id);
               }}
             >
               <input
                 type="text"
                 data-cy="TodoTitleField"
                 value={editTitle}
-                placeholder={
-                  todo.title === '' ? 'Empty todo will be deleted' : ''
-                }
-                onBlur={() => handleSubmit(todo.id)}
+                className="todoapp__new-todo"
+                placeholder="Empty todo will be deleted"
+                onBlur={() => handleSubmit(id)}
                 onKeyUp={handleKeyUp}
                 onChange={handleInput}
-                // disabled={loading !== 0}
                 autoFocus
               />
             </form>
@@ -118,22 +114,20 @@ export const TodoList = () => {
               data-cy="TodoTitle"
               className="todo__title"
               onDoubleClick={() => {
-                const { id, title: todoTitle } = todo;
-
-                handleDoubleClick(id, todoTitle);
+                handleDoubleClick(id, title);
               }}
             >
-              {todo.title}
+              {title}
             </span>
           )}
 
           {/* Remove button appears only on hover */}
-          {isEditingId !== todo.id && (
+          {isEditingId !== id && (
             <button
               type="button"
               className="todo__remove"
               data-cy="TodoDelete"
-              onClick={() => deleteTodo(todo.id)}
+              onClick={() => deleteTodo(id)}
             >
               ×
             </button>
