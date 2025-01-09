@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Action } from '../../types/Action';
 import { ActionType } from '../../types/ActionType';
 import { Todo } from '../../types/Todo';
@@ -11,6 +11,13 @@ interface Props {
 
 export const TodoHeader: React.FC<Props> = ({ todos, dispatch }) => {
   const [query, setQuery] = useState('');
+  const refInput = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (refInput.current) {
+      refInput.current.focus();
+    }
+  }, []);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,7 +39,7 @@ export const TodoHeader: React.FC<Props> = ({ todos, dispatch }) => {
       <button
         type="button"
         className={classNames('todoapp__toggle-all', {
-          active: todos.every(todo => todo.completed),
+          active: todos?.every(todo => todo.completed),
         })}
         data-cy="ToggleAllButton"
         onClick={() => dispatch({ type: ActionType.AllCompleted })}
@@ -45,6 +52,7 @@ export const TodoHeader: React.FC<Props> = ({ todos, dispatch }) => {
           className="todoapp__new-todo"
           placeholder="What needs to be done?"
           value={query}
+          ref={refInput}
           onChange={e => setQuery(e.target.value)}
           autoFocus
         />

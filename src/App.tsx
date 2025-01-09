@@ -34,7 +34,7 @@ export const App: React.FC = () => {
       <div className="todoapp__content">
         <TodoHeader todos={todos} dispatch={dispatch} />
 
-        {todos.length > 0 && (
+        {filteredTodos && (
           <section className="todoapp__main" data-cy="TodoList">
             {filteredTodos.map(todo => (
               <TodoItem todo={todo} dispatch={dispatch} key={todo.id} />
@@ -42,7 +42,7 @@ export const App: React.FC = () => {
           </section>
         )}
 
-        {todos.length > 0 && (
+        {filteredTodos && filteredTodos.length > 0 && (
           <TodoFooter todos={todos} filter={filter} dispatch={dispatch} />
         )}
       </div>

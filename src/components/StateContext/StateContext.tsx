@@ -3,6 +3,7 @@ import { Action } from '../../types/Action';
 import { ActionType } from '../../types/ActionType';
 import { FilterType } from '../../types/FilterType';
 import { State } from '../../types/State';
+import { Todo } from '../../types/Todo';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 const initialState: State = {
@@ -15,6 +16,10 @@ interface Props {
 }
 
 function reducer(state: State, action: Action): State {
+  if (!Array.isArray(state.todos)) {
+    return { ...state, todos: [] };
+  }
+
   switch (action.type) {
     case ActionType.Add: {
       return { ...state, todos: [...state.todos, action.payload] };
@@ -86,7 +91,7 @@ export const DispatchContext = React.createContext<(action: Action) => void>(
 );
 
 export const StateProvider: React.FC<Props> = ({ children }) => {
-  const [todos, setTodos] = useLocalStorage<State>('todos', initialState);
+  const [todos, setTodos] = useLocalStorage<Todo[]>(initialState.todos);
   const [state, dispatch] = useReducer<Reducer<State, Action>>(reducer, todos);
 
   const onDispatch = (action: Action) => {

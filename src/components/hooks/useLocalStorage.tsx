@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-export function useLocalStorage<T>(key: string, startValue: T) {
-  const [value, setValue] = useState(() => {
-    const data = localStorage.getItem(key);
+export function useLocalStorage<T>(startValue: T) {
+  const [todos, setTodos] = useState(() => {
+    const data = localStorage.getItem('todos');
 
     if (data === null) {
       return startValue;
@@ -11,17 +11,15 @@ export function useLocalStorage<T>(key: string, startValue: T) {
     try {
       return JSON.parse(data);
     } catch {
-      localStorage.removeItem(key);
+      localStorage.removeItem('todos');
 
       return startValue;
     }
   });
 
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
 
-    setValue(value);
-  }, [key, value]);
-
-  return [value, setValue] as const;
+  return [todos, setTodos] as const;
 }
