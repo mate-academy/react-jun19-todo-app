@@ -11,13 +11,14 @@ interface Props {
 
 export const TodoHeader: React.FC<Props> = ({ todos, dispatch }) => {
   const [query, setQuery] = useState('');
+  const allCompleted = todos.filter(todo => todo.completed);
   const refInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (refInput.current) {
       refInput.current.focus();
     }
-  }, []);
+  }, [todos]);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,7 +26,7 @@ export const TodoHeader: React.FC<Props> = ({ todos, dispatch }) => {
     if (query.trim() !== '') {
       const newTodo: Todo = {
         id: +new Date(),
-        title: query,
+        title: query.trim(),
         completed: false,
       };
 
@@ -36,14 +37,17 @@ export const TodoHeader: React.FC<Props> = ({ todos, dispatch }) => {
 
   return (
     <header className="todoapp__header">
-      <button
-        type="button"
-        className={classNames('todoapp__toggle-all', {
-          active: todos?.every(todo => todo.completed),
-        })}
-        data-cy="ToggleAllButton"
-        onClick={() => dispatch({ type: ActionType.AllCompleted })}
-      />
+      {todos.length > 0 && (
+        <button
+          type="button"
+          className={classNames('todoapp__toggle-all', {
+            active:
+              allCompleted.length === todos.length && allCompleted.length > 0,
+          })}
+          data-cy="ToggleAllButton"
+          onClick={() => dispatch({ type: ActionType.AllCompleted })}
+        />
+      )}
 
       <form onSubmit={onSubmit}>
         <input

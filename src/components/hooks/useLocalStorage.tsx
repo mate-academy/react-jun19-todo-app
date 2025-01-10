@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export function useLocalStorage<T>(startValue: T) {
-  const [todos, setTodos] = useState(() => {
+  const [todos, setTodos] = useState<T>(() => {
     const data = localStorage.getItem('todos');
 
     if (data === null) {

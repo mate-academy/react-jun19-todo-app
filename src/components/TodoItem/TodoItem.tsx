@@ -34,7 +34,10 @@ export const TodoItem: React.FC<Props> = ({ todo, dispatch }) => {
     } else if (query.trim() === '') {
       dispatch({ type: ActionType.Delete, payload: id });
     } else if (query !== title) {
-      dispatch({ type: ActionType.UpdateTitle, payload: { id, title: query } });
+      dispatch({
+        type: ActionType.UpdateTitle,
+        payload: { id, title: query.trim() },
+      });
     }
   };
 

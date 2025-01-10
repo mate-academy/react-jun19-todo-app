@@ -42,7 +42,7 @@ export const App: React.FC = () => {
           </section>
         )}
 
-        {filteredTodos && filteredTodos.length > 0 && (
+        {todos && todos.length > 0 && (
           <TodoFooter todos={todos} filter={filter} dispatch={dispatch} />
         )}
       </div>

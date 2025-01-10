@@ -16,10 +16,6 @@ interface Props {
 }
 
 function reducer(state: State, action: Action): State {
-  if (!Array.isArray(state.todos)) {
-    return { ...state, todos: [] };
-  }
-
   switch (action.type) {
     case ActionType.Add: {
       return { ...state, todos: [...state.todos, action.payload] };
@@ -50,9 +46,11 @@ function reducer(state: State, action: Action): State {
     }
 
     case ActionType.AllCompleted: {
+      const allCompleted = state.todos.every(todo => todo.completed);
+
       const updatedTodos = state.todos.map(todo => ({
         ...todo,
-        completed: !todo.completed,
+        completed: !allCompleted,
       }));
 
       return { ...state, todos: updatedTodos };
@@ -92,12 +90,15 @@ export const DispatchContext = React.createContext<(action: Action) => void>(
 
 export const StateProvider: React.FC<Props> = ({ children }) => {
   const [todos, setTodos] = useLocalStorage<Todo[]>(initialState.todos);
-  const [state, dispatch] = useReducer<Reducer<State, Action>>(reducer, todos);
+  const [state, dispatch] = useReducer<Reducer<State, Action>>(reducer, {
+    ...initialState,
+    todos,
+  });
 
   const onDispatch = (action: Action) => {
     const newState = reducer(state, action);
 
-    setTodos(newState);
+    setTodos(newState.todos);
     dispatch(action);
   };
 
