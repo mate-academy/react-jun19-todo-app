@@ -21,7 +21,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   }
 
   const deleteTodo = (id: number) => {
-    const filteredTodos = todos.filter(todo => todo.id !== id);
+    const filteredTodos = todos.filter(t => t.id !== id);
 
     setTodos(filteredTodos);
     localStorage.setItem('todos', JSON.stringify(filteredTodos));
@@ -31,7 +31,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   }
 
   const editTodo = (title: string, id: number) => {
-    const updatedTodos = todos.map(todo => todo.id === id ? { ...todo, title } : todo);
+    const updatedTodos = todos.map(t => t.id === id ? { ...t, title } : t);
 
     setTodos(updatedTodos);
     localStorage.setItem('todos', JSON.stringify(updatedTodos));
@@ -76,8 +76,8 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   };
 
   const toggleTodoStatus = (id: number) => {
-    const updatedTodos = todos.map(todo =>
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    const updatedTodos = todos.map(t =>
+      t.id === id ? { ...t, completed: !t.completed } : t
     );
 
     setTodos(updatedTodos);
@@ -86,8 +86,9 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
 
   return (
     <div data-cy="Todo" className={classNames("todo", {completed: todo.completed})} onDoubleClick={handleDoubleClick}>
-      <label className="todo__status-label">
+      <label htmlFor="todoStatus" className="todo__status-label">
         <input
+          id="todoStatus"
           data-cy="TodoStatus"
           type="checkbox"
           className="todo__status"
