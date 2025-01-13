@@ -9,6 +9,8 @@ interface TodoContextType {
   setTitle: (title: string) => void;
   filter: 'all' | 'active' | 'completed';
   setFilter: (filter: 'all' | 'active' | 'completed') => void;
+  newTitle: string;
+  setNewTitle: (editTitle: string) => void;
 }
 
 export const TodoContext = React.createContext<TodoContextType>({
@@ -18,6 +20,8 @@ export const TodoContext = React.createContext<TodoContextType>({
   setTitle: () => {},
   filter: 'all',
   setFilter: () => {},
+  newTitle: '',
+  setNewTitle: () => {},
 });
 
 type Props = {
@@ -28,6 +32,7 @@ export const TodoProvider: React.FC<Props> = ({ children }) => {
   const [ todos, setTodos ] = useState<Todo[]>([]);
   const [ title, setTitle ] = useState<string>('');
   const [ filter, setFilter ] = useState<FilterType>('all');
+  const [ newTitle, setNewTitle ] = useState<string>('');
 
   const value: TodoContextType = {
     todos,
@@ -35,7 +40,9 @@ export const TodoProvider: React.FC<Props> = ({ children }) => {
     title,
     setTitle,
     filter,
-    setFilter
+    setFilter,
+    newTitle,
+    setNewTitle,
   }
 
   return (

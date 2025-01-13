@@ -17,6 +17,9 @@ export const Footer: React.FC = () => {
 
     setTodos(todosCompleted);
     localStorage.setItem('todos', JSON.stringify(todosCompleted));
+
+    const inputField = document.querySelector(".todoapp__new-todo") as HTMLInputElement;
+    inputField!.focus();
   };
 
   return (

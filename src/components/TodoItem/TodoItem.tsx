@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Todo } from '../../types/Todo';
 import classNames from 'classnames';
 import { useTodoContext } from '../../context/TodoContext';
@@ -8,7 +8,62 @@ interface Props {
 }
 
 export const TodoItem: React.FC<Props> = ({ todo }) => {
-  const { todos, setTodos } = useTodoContext();
+  const { todos, setTodos, newTitle, setNewTitle } = useTodoContext();
+  const [isEditForm, setIsEditForm] = useState(false);
+  const editInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDoubleClick = () => {
+    setIsEditForm(true);
+    setNewTitle(todo.title);
+    setTimeout(() => {
+      editInputRef.current?.focus();
+    }, 0);
+  }
+
+  const editTitle = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const form = new FormData(e.currentTarget);
+    const newTitle = form.get('TodoTitleField') as string;
+
+    if (!newTitle.trim()) {
+      deleteTodo(todo.id);
+    } else if (newTitle !== todo.title) {
+      editTodo(newTitle.trim(), todo.id);
+    }
+
+    setTimeout(() => {
+      setIsEditForm(false);
+    }, 100);
+  };
+
+  const handleTitleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTitle = e.target.value.trim();
+
+    if (!newTitle) {
+      deleteTodo(todo.id);
+      return;
+    }
+
+    if (newTitle !== todo.title) {
+      editTodo(newTitle, todo.id);
+    }
+
+    setIsEditForm(false);
+  };
+
+  const editTodo = (title: string, id: number) => {
+    const updatedTodos = todos.map(todo => todo.id === id ? { ...todo, title } : todo);
+
+    setTodos(updatedTodos);
+    localStorage.setItem('todos', JSON.stringify(updatedTodos));
+  };
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Escape') {
+      setIsEditForm(false);
+    }
+  };
 
   const deleteTodo = (id: number) => {
     const filteredTodos = todos.filter(todo => todo.id !== id);
@@ -30,7 +85,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   }
 
   return (
-    <div data-cy="Todo" className={classNames("todo", {completed: todo.completed})}>
+    <div data-cy="Todo" className={classNames("todo", {completed: todo.completed})} onDoubleClick={handleDoubleClick}>
       <label className="todo__status-label">
         <input
           data-cy="TodoStatus"
@@ -41,14 +96,37 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
         />
       </label>
 
-      <span data-cy="TodoTitle" className="todo__title">
-        {todo.title}
-      </span>
+      {isEditForm ? (
+        <form onSubmit={editTitle}>
+          <input
+            data-cy="TodoTitleField"
+            type="text"
+            className="todo__title-field"
+            placeholder='What needs to be done?'
+            value={newTitle}
+            name="TodoTitleField"
+            ref={editInputRef}
+            onChange={(e) => setNewTitle(e.target.value)}
+            onBlur={handleTitleBlur}
+            onKeyUp={handleKeyUp}
+          />
+        </form>
+      ) : (
+        <span
+          data-cy="TodoTitle"
+          className="todo__title"
+        >
+          {todo.title}
+        </span>
+      )}
+
 
       {/* Remove button appears only on hover */}
-      <button type="button" className="todo__remove" data-cy="TodoDelete" onClick={() => deleteTodo(todo.id)}>
+      {!isEditForm && (
+      <button type="button" className="todo__remove" data-cy="TodoDelete" onClick={() => deleteTodo(todo.id)} >
         ×
       </button>
+      )}
     </div>
   )
 }
