@@ -20,6 +20,29 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
     }, 0);
   }
 
+  const deleteTodo = (id: number) => {
+    const filteredTodos = todos.filter(todo => todo.id !== id);
+
+    setTodos(filteredTodos);
+    localStorage.setItem('todos', JSON.stringify(filteredTodos));
+
+    const inputField = document.querySelector(".todoapp__new-todo") as HTMLInputElement;
+    inputField!.focus();
+  }
+
+  const editTodo = (title: string, id: number) => {
+    const updatedTodos = todos.map(todo => todo.id === id ? { ...todo, title } : todo);
+
+    setTodos(updatedTodos);
+    localStorage.setItem('todos', JSON.stringify(updatedTodos));
+  };
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Escape') {
+      setIsEditForm(false);
+    }
+  };
+
   const editTitle = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -38,42 +61,19 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   };
 
   const handleTitleBlur = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTitle = e.target.value.trim();
+    const newTitleBlur = e.target.value.trim();
 
-    if (!newTitle) {
+    if (!newTitleBlur) {
       deleteTodo(todo.id);
       return;
     }
 
-    if (newTitle !== todo.title) {
-      editTodo(newTitle, todo.id);
+    if (newTitleBlur !== todo.title) {
+      editTodo(newTitleBlur, todo.id);
     }
 
     setIsEditForm(false);
   };
-
-  const editTodo = (title: string, id: number) => {
-    const updatedTodos = todos.map(todo => todo.id === id ? { ...todo, title } : todo);
-
-    setTodos(updatedTodos);
-    localStorage.setItem('todos', JSON.stringify(updatedTodos));
-  };
-
-  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Escape') {
-      setIsEditForm(false);
-    }
-  };
-
-  const deleteTodo = (id: number) => {
-    const filteredTodos = todos.filter(todo => todo.id !== id);
-
-    setTodos(filteredTodos);
-    localStorage.setItem('todos', JSON.stringify(filteredTodos));
-
-    const inputField = document.querySelector(".todoapp__new-todo") as HTMLInputElement;
-    inputField!.focus();
-  }
 
   const toggleTodoStatus = (id: number) => {
     const updatedTodos = todos.map(todo =>
