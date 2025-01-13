@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useEffect } from 'react';
-import { Header } from './Header';
-import { TodoList } from './TodoList';
-import { Footer } from './Footer';
-import { Todo } from '../types/Todo';
-import { useTodoContext } from '../context/TodoContext'
-import { getTodos } from '../storage/localStorage';
+import { Header } from '../Header/Header';
+import { TodoList } from '../TodoList/TodoList';
+import { Footer } from '../Footer/Footer';
+import { Todo } from '../../types/Todo';
+import { useTodoContext } from '../../context/TodoContext'
+import { getTodos } from '../../storage/localStorage';
 
 
 export const App: React.FC = () => {

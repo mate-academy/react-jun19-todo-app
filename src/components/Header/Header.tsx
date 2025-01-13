@@ -1,6 +1,7 @@
 import React from 'react';
-import { useTodoContext } from '../context/TodoContext';
-import { Todo } from '../types/Todo';
+import { useTodoContext } from '../../context/TodoContext';
+import { Todo } from '../../types/Todo';
+import classNames from 'classnames';
 
 
 export const Header: React.FC = () => {
@@ -24,15 +25,31 @@ export const Header: React.FC = () => {
     setTitle('');
   };
 
+  const toogleAllTodos = () => {
+    const allCompleted = todos.every(todo => todo.completed);
+
+    const updatedTodos = todos.map(todo => ({
+      ...todo,
+      completed: !allCompleted,
+    }));
+
+    setTodos(updatedTodos);
+    localStorage.setItem('todos', JSON.stringify(updatedTodos));
+  }
+
   return (
     <header className="todoapp__header">
       {/* this button should have `active` class only if all todos are completed */}
-      <button
+      {todos.length > 0 && (
+        <button
         type="button"
-        className="todoapp__toggle-all active"
+        className={classNames('todoapp__toggle-all', {
+          active: todos.every(todo => todo.completed),
+          })}
         data-cy="ToggleAllButton"
+        onClick={toogleAllTodos}
       />
-
+      )}
       {/* Add a todo on form submit */}
         <form onSubmit={handleSubmit}>
           <input
@@ -42,6 +59,7 @@ export const Header: React.FC = () => {
             placeholder="What needs to be done?"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            autoFocus
           />
         </form>
     </header>
