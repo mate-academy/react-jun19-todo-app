@@ -24,12 +24,12 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
     e.preventDefault();
 
     const form = new FormData(e.currentTarget);
-    const newTitle = form.get('TodoTitleField') as string;
+    const newEditTitle = form.get('TodoTitleField') as string;
 
-    if (!newTitle.trim()) {
+    if (!newEditTitle.trim()) {
       deleteTodo(todo.id);
-    } else if (newTitle !== todo.title) {
-      editTodo(newTitle.trim(), todo.id);
+    } else if (newEditTitle !== todo.title) {
+      editTodo(newEditTitle.trim(), todo.id);
     }
 
     setTimeout(() => {

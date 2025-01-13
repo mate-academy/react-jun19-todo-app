@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { Header } from '../Header/Header';
 import { TodoList } from '../TodoList/TodoList';
 import { Footer } from '../Footer/Footer';
-import { Todo } from '../../types/Todo';
 import { useTodoContext } from '../../context/TodoContext'
 import { getTodos } from '../../storage/localStorage';
 
