@@ -86,9 +86,8 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
 
   return (
     <div data-cy="Todo" className={classNames("todo", {completed: todo.completed})} onDoubleClick={handleDoubleClick}>
-      <label htmlFor="todoStatus" className="todo__status-label">
+      <label className="todo__status-label">
         <input
-          id="todoStatus"
           data-cy="TodoStatus"
           type="checkbox"
           className="todo__status"
