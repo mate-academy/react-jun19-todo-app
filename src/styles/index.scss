@@ -1,3 +1,5 @@
+
+
 iframe {
   display: none;
 }
@@ -20,6 +22,6 @@ body {
   pointer-events: none;
 }
 
-@import './todoapp';
-@import './todo';
-@import './filter';
+@import './filters.scss';
+@import './todo-list.scss';
+@import './todoapp.scss';
