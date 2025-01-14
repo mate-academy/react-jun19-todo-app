@@ -30,9 +30,9 @@ type Props = {
 
 export const TodoProvider: React.FC<Props> = ({ children }) => {
   const [ todos, setTodos ] = useState<Todo[]>([]);
-  const [ title, setTitle ] = useState<string>('');
+  const [ title, setTitle ] = useState('');
   const [ filter, setFilter ] = useState<FilterType>('all');
-  const [ newTitle, setNewTitle ] = useState<string>('');
+  const [ newTitle, setNewTitle ] = useState('');
 
   const value: TodoContextType = {
     todos,
