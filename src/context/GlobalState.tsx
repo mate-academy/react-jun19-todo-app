@@ -1,49 +1,67 @@
-import { createContext, ReactNode, useEffect, useReducer } from 'react';
+import React, { createContext, ReactNode, useEffect, useReducer } from 'react';
 import { Todo } from '../types/Todo';
 import { useLocalStorage } from '../hook/useLocalStorage';
+import { FilterType } from '../enum/filter';
+
+type Filter = FilterType.All | FilterType.Active | FilterType.Completed;
 
 interface State {
   todos: Todo[] | [];
   filteredTodos: Todo[] | [];
+  filter: Filter;
 }
 
 export type Action =
   | { type: 'set'; payload: Todo[] }
-  | { type: 'create'; payload: Todo[] }
   | { type: 'update'; payload: Todo[] }
-  | { type: 'delete'; payload: Todo[] }
-  | { type: 'all' }
-  | { type: 'active' }
-  | { type: 'completed' };
+  | { type: FilterType.All }
+  | { type: FilterType.Active }
+  | { type: FilterType.Completed };
 
-function reducer(state: State, action: Action) {
+function reducer(state: State, action: Action): State {
   const { todos } = state;
 
   switch (action.type) {
     case 'set':
       const initTodos = action.payload;
 
-      return { todos: initTodos, filteredTodos: initTodos };
-    case 'all':
-      return { ...state, filteredTodos: todos };
-    case 'active':
+      return { ...state, todos: initTodos, filteredTodos: initTodos };
+    case FilterType.All:
+      return { ...state, filteredTodos: todos, filter: FilterType.All };
+    case FilterType.Active:
       const active = todos.filter(todo => {
         return !todo.completed;
       });
 
-      return { ...state, filteredTodos: active };
+      return { ...state, filteredTodos: active, filter: FilterType.Active };
 
-    case 'completed':
+    case FilterType.Completed:
       const completed = todos.filter(todo => {
         return todo.completed;
       });
 
-      return { ...state, filteredTodos: completed };
+      return {
+        ...state,
+        filteredTodos: completed,
+        filter: FilterType.Completed,
+      };
 
-    case 'create':
     case 'update':
-    case 'delete':
-      return { ...state, todos: action.payload };
+      const updatedTodos = action.payload;
+
+      let updatedFilteredTodos = updatedTodos;
+
+      if (state.filter === FilterType.Active) {
+        updatedFilteredTodos = updatedTodos.filter(todo => !todo.completed);
+      } else if (state.filter === FilterType.Completed) {
+        updatedFilteredTodos = updatedTodos.filter(todo => todo.completed);
+      }
+
+      return {
+        ...state,
+        todos: updatedTodos,
+        filteredTodos: updatedFilteredTodos,
+      };
 
     default:
       return state;
@@ -53,6 +71,7 @@ function reducer(state: State, action: Action) {
 const initialState: State = {
   todos: [],
   filteredTodos: [],
+  filter: FilterType.All,
 };
 
 type Global = {
@@ -60,15 +79,12 @@ type Global = {
 };
 
 export const StateContext = createContext(initialState);
-// eslint-disable-next-line no-console
-export const DispatchContext = createContext(({}: Action) => {});
-// export const DispatchContext = createContext((action: Action) => {});
+export const DispatchContext = createContext<React.Dispatch<Action>>(() => {});
 
 export function GlobalStateProvider({ children }: Global) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { getItem, setItem } = useLocalStorage<Todo[]>('todos');
 
-  // Initialize todos from localStorage
   useEffect(() => {
     const todoList = getItem();
 
@@ -82,7 +98,6 @@ export function GlobalStateProvider({ children }: Global) {
     }
   }, [getItem]);
 
-  // Sync todos with localStorage
   useEffect(() => {
     setItem(state.todos);
   }, [state.todos, setItem]);
