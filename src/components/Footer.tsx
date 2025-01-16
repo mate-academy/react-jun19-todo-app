@@ -7,7 +7,7 @@ export function Footer() {
   const dispatch = useContext(DispatchContext);
   const { todos, filter: activeFilter } = useContext(StateContext);
 
-  const TodosLeft: number = useMemo(() => {
+  const todosLeft: number = useMemo(() => {
     return todos.filter(todo => {
       return !todo.completed;
     }).length;
@@ -32,7 +32,7 @@ export function Footer() {
   return (
     <footer className="todoapp__footer" data-cy="Footer">
       <span className="todo-count" data-cy="TodosCounter">
-        {`${TodosLeft} items left`}
+        {`${todosLeft} items left`}
       </span>
 
       {/* Active link should have the 'selected' class */}
