@@ -7,7 +7,7 @@ import { FilteredTodoContext } from '../store/FilterdTodoContext';
 
 export const Footer = () => {
   const { todos, setTodos } = useContext(TodoContext);
-  const { status, setStatus, filteredTodos, setfilteredTodos } =
+  const { status, setStatus, setfilteredTodos } =
     useContext(FilteredTodoContext);
 
   const notCompletedTodos = todos.filter(t => t.completed === false);
@@ -19,12 +19,12 @@ export const Footer = () => {
   };
 
   const handleChooseActive = () => {
-    setfilteredTodos(todos.filter(t => t.completed === false));
+    setfilteredTodos([...todos].filter(t => t.completed === false));
     setStatus(Status.active);
   };
 
   const handleChooseCompleted = () => {
-    setfilteredTodos(todos.filter(t => t.completed === true));
+    setfilteredTodos([...todos].filter(t => t.completed === true));
     setStatus(Status.completed);
   };
 

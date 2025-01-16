@@ -9,6 +9,7 @@ type T = {
   status: Status;
   setStatus: (status: Status) => void;
   todos: Todo[];
+  setTodos: (todos: Todo[]) => void;
   filteredTodos: Todo[];
   setfilteredTodos: (todos: Todo[]) => void;
 };
@@ -17,6 +18,7 @@ export const FilteredTodoContext = React.createContext<T>({
   status: Status.all,
   setStatus: (_status: Status) => {},
   todos: [],
+  setTodos: (_todos: Todo[]) => {},
   filteredTodos: [],
   setfilteredTodos: (_todos: Todo[]) => {},
 });
@@ -26,9 +28,9 @@ type Props = {
 };
 
 export const FilteredTodoProvider: React.FC<Props> = ({ children }) => {
-  const { todos } = useContext(TodoContext);
+  const { todos, setTodos } = useContext(TodoContext);
 
-  const [filteredTodos, setfilteredTodos] = useState<Todo[]>(todos);
+  const [filteredTodos, setfilteredTodos] = useState<Todo[]>([...todos]);
   const [status, setStatus] = useState(Status.all);
 
   const value = useMemo(
@@ -36,10 +38,11 @@ export const FilteredTodoProvider: React.FC<Props> = ({ children }) => {
       status,
       setStatus,
       todos,
+      setTodos,
       filteredTodos,
       setfilteredTodos,
     }),
-    [filteredTodos, setfilteredTodos, todos, status, setStatus],
+    [filteredTodos, setfilteredTodos, todos, status, setStatus, setTodos],
   );
 
   return (

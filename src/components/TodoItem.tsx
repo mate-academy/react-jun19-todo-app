@@ -6,26 +6,24 @@ import { TodoContext } from '../store/TodoContext';
 import './TodoApp.scss';
 import classNames from 'classnames';
 import { FilteredTodoContext } from '../store/FilterdTodoContext';
-import { Status } from '../types/Status';
 
 /* eslint-disable import/extensions */
 type Props = { todo: Todo };
 
-function filterTodos(isCompleted) {
-  switch (isCompleted) {
-    case isCompleted:
-      return Status.completed;
-    case !isCompleted:
-      return Status.active;
-    default:
-      return Status.all;
-  }
-}
+// function filterTodos(isCompleted) {
+//   switch (isCompleted) {
+//     case isCompleted:
+//       return Status.completed;
+//     case !isCompleted:
+//       return Status.active;
+//     default:
+//       return Status.all;
+//   }
+// }
 
 export const TodoItem: React.FC<Props> = ({ todo }) => {
   const { todos, setTodos } = useContext(TodoContext);
-  const { filteredTodos, setfilteredTodos, status, setStatus } =
-    useContext(FilteredTodoContext);
+  const { filteredTodos, setfilteredTodos } = useContext(FilteredTodoContext);
   const index = todos.findIndex(t => t.id === todo.id);
   const [isEdit, setIsEdit] = useState(false);
   const [tempTitle, setTempTitle] = useState(todo.title);
@@ -35,13 +33,24 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   };
 
   function handleToggleCompleted() {
-    const isCompleted = !todos[index].completed;
+    setTodos((prev: Todo[]) => {
+      const newTodos = [...prev];
 
-    todos[index].completed = isCompleted;
+      newTodos[index].completed = !prev[index].completed;
 
-    setTodos(todos);
-    setfilteredTodos([...todos].filter(t => t.completed === !isCompleted));
+      return newTodos;
+    });
   }
+
+  // function handleToggleCompleted() {
+  //   todos[index].completed = !todo.completed;
+
+  //   const newTodos = [...todos];
+
+  //   newTodos[index].completed = !todos[index].completed;
+
+  //   setTodos([...newTodos]);
+  // }
 
   function handleDoubleClick() {
     setIsEdit(true);

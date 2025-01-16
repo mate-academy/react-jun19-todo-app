@@ -6,14 +6,13 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 
 type T = {
   todos: Todo[];
-  setTodos: (todos: Todo[]) => void;
-  // addTodo: (todo: Todo) => void;
+  // setTodos: (_todos: Todo[]) => void | [];
+  setTodos: (_todos: Todo[]) => void;
 };
 
 export const TodoContext = React.createContext<T>({
   todos: [],
   setTodos: (_todos: Todo[]) => {},
-  // addTodo: (_todo: Todo) => {},
 });
 
 type Props = {

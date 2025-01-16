@@ -4,11 +4,11 @@ import './styles/todoapp.scss';
 import { TodoList } from './components/TodoList';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import { FilteredTodoContext } from './store/FilterdTodoContext';
+// import { FilteredTodoContext } from './store/FilterdTodoContext';
 import { TodoContext } from './store/TodoContext';
 export const App: React.FC = () => {
   const { todos } = useContext(TodoContext);
-  const { filteredTodos } = useContext(FilteredTodoContext);
+  // const { filteredTodos } = useContext(FilteredTodoContext);
 
   return (
     <div className="todoapp">
