@@ -1,17 +1,19 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Todo } from '../types/Todo';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 type T = {
   todos: Todo[];
-  setTodos: (_todos: Todo[]) => void;
+  setTodos: (todos: Todo[]) => void;
+  // addTodo: (todo: Todo) => void;
 };
 
 export const TodoContext = React.createContext<T>({
   todos: [],
   setTodos: (_todos: Todo[]) => {},
+  // addTodo: (_todo: Todo) => {},
 });
 
 type Props = {
@@ -19,7 +21,7 @@ type Props = {
 };
 
 export const TodoProvider: React.FC<Props> = ({ children }) => {
-  const [todos, setTodos] = useState(useLocalStorage<Todo[]>('todos', []));
+  const [todos, setTodos] = useLocalStorage<Todo[]>('todos', []);
 
   const value = useMemo(
     () => ({

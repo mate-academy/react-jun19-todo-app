@@ -1,16 +1,19 @@
 /* eslint-disable import/extensions */
-/* eslint-disable @typescript-eslint/quotes */ import React from 'react';
-import '../styles/todo-list.css';
+/* eslint-disable @typescript-eslint/quotes */
+import { useContext } from 'react';
+import './TodoApp.scss';
 
 import { TodoItem } from './TodoItem';
-import { Todo } from '../types/Todo';
-type Props = { todos: Todo[] };
-export const TodoList: React.FC<Props> = ({ todos }) => {
+import { FilteredTodoContext } from '../store/FilterdTodoContext';
+// type Props = { todos: Todo[] };
+export const TodoList = () => {
+  const { filteredTodos } = useContext(FilteredTodoContext);
+
   return (
-    <ul className="todo-list" data-cy="todosList">
-      {todos.map(todo => (
+    <section className="todoapp__main" data-cy="TodoList">
+      {filteredTodos.map(todo => (
         <TodoItem todo={todo} key={todo.id} />
       ))}
-    </ul>
+    </section>
   );
 };
