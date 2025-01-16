@@ -1,0 +1,17 @@
+.filter {
+  display: flex;
+}
+.filter__link {
+  margin: 3px;
+  padding: 3px 7px;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+.filter__link:hover {
+  border-color: rgba(175, 47, 47, 0.1);
+}
+.filter__link.selected {
+  border-color: rgba(175, 47, 47, 0.2);
+}/*# sourceMappingURL=filters.css.map */

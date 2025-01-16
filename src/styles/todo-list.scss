@@ -9,6 +9,7 @@
   line-height: 1.4em;
   border-bottom: 1px solid #ededed;
 
+
   &:last-child {
     border-bottom: 0;
   }
@@ -73,6 +74,7 @@
   &__title-field {
     width: 100%;
     padding: 11px 14px;
+    box-sizing: border-box;
 
     font-size: inherit;
     line-height: inherit;

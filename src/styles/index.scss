@@ -1,10 +1,16 @@
+html {
+  display: flex;
+  justify-content: center;
+
+}
+
 iframe {
   display: none;
 }
 
 body {
-  min-width: 230px;
-  max-width: 550px;
+  width: 230px;
+  width: 550px;
   margin: 0 auto;
 }
 
@@ -21,5 +27,6 @@ body {
 }
 
 @import './todoapp';
-@import './todo';
-@import './filter';
+@import './todo-list';
+@import './filters';
+@import "bulma/css/bulma.min";
