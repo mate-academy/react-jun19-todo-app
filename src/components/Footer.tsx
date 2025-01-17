@@ -3,28 +3,22 @@ import { TodoContext } from '../store/TodoContext';
 import './TodoApp.scss';
 import classNames from 'classnames';
 import { Status } from '../types/Status';
-import { FilteredTodoContext } from '../store/FilterdTodoContext';
 
 export const Footer = () => {
-  const { todos, setTodos } = useContext(TodoContext);
-  const { status, setStatus, setfilteredTodos } =
-    useContext(FilteredTodoContext);
+  const { todos, setTodos, status, setStatus } = useContext(TodoContext);
 
   const notCompletedTodos = todos.filter(t => t.completed === false);
   const completedTodos = todos.filter(t => t.completed === true);
 
   const handleChooseAll = () => {
-    setfilteredTodos(todos);
     setStatus(Status.all);
   };
 
   const handleChooseActive = () => {
-    setfilteredTodos([...todos].filter(t => t.completed === false));
     setStatus(Status.active);
   };
 
   const handleChooseCompleted = () => {
-    setfilteredTodos([...todos].filter(t => t.completed === true));
     setStatus(Status.completed);
   };
 
@@ -32,7 +26,6 @@ export const Footer = () => {
     const tempTodos = todos.filter(todo => todo.completed === false);
 
     setTodos(tempTodos);
-    setfilteredTodos(tempTodos);
   }
 
   return (

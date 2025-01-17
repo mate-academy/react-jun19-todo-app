@@ -1,15 +1,14 @@
 /* eslint-disable import/extensions */
 /* eslint-disable @typescript-eslint/quotes */
+
 import { useContext } from 'react';
+import { TodoContext } from '../store/TodoContext';
 import './TodoApp.scss';
 
 import { TodoItem } from './TodoItem';
-import { FilteredTodoContext } from '../store/FilterdTodoContext';
-// import { TodoContext } from '../store/TodoContext';
-// type Props = { todos: Todo[] };
+
 export const TodoList = () => {
-  const { filteredTodos } = useContext(FilteredTodoContext);
-  // const { todos, setTodos } = useContext(TodoContext);
+  const { filteredTodos } = useContext(TodoContext);
 
   return (
     <section className="todoapp__main" data-cy="TodoList">

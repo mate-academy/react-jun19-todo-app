@@ -5,25 +5,12 @@ import { Todo } from '../types/Todo';
 import { TodoContext } from '../store/TodoContext';
 import './TodoApp.scss';
 import classNames from 'classnames';
-import { FilteredTodoContext } from '../store/FilterdTodoContext';
 
 /* eslint-disable import/extensions */
 type Props = { todo: Todo };
 
-// function filterTodos(isCompleted) {
-//   switch (isCompleted) {
-//     case isCompleted:
-//       return Status.completed;
-//     case !isCompleted:
-//       return Status.active;
-//     default:
-//       return Status.all;
-//   }
-// }
-
 export const TodoItem: React.FC<Props> = ({ todo }) => {
   const { todos, setTodos } = useContext(TodoContext);
-  const { filteredTodos, setfilteredTodos } = useContext(FilteredTodoContext);
   const index = todos.findIndex(t => t.id === todo.id);
   const [isEdit, setIsEdit] = useState(false);
   const [tempTitle, setTempTitle] = useState(todo.title);
@@ -33,24 +20,9 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   };
 
   function handleToggleCompleted() {
-    setTodos((prev: Todo[]) => {
-      const newTodos = [...prev];
-
-      newTodos[index].completed = !prev[index].completed;
-
-      return newTodos;
-    });
+    todos[index].completed = !todos[index].completed;
+    setTodos([...todos]);
   }
-
-  // function handleToggleCompleted() {
-  //   todos[index].completed = !todo.completed;
-
-  //   const newTodos = [...todos];
-
-  //   newTodos[index].completed = !todos[index].completed;
-
-  //   setTodos([...newTodos]);
-  // }
 
   function handleDoubleClick() {
     setIsEdit(true);
@@ -59,7 +31,6 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   function handleRemoveTodo() {
     todos.splice(index, 1);
     setTodos([...todos]);
-    setfilteredTodos(todos);
   }
 
   function onEditFormSubmit() {
@@ -143,6 +114,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
           {/* This form is shown instead of the title and remove button */}
           <form onSubmit={onEditFormSubmit}>
             <input
+              autoFocus
               data-cy="TodoTitleField"
               type="text"
               className="todo__title-field"

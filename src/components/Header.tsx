@@ -11,20 +11,19 @@ import './TodoApp.scss';
 
 import { TodoContext } from '../store/TodoContext';
 import { Todo } from '../types/Todo';
-import { FilteredTodoContext } from '../store/FilterdTodoContext';
+import classNames from 'classnames';
 
 export const Header = () => {
   const { todos, setTodos } = useContext(TodoContext);
   const [title, setTitle] = useState('');
-  const [isToggle, setIsToggle] = useState(false);
-  const { setfilteredTodos } = useContext(FilteredTodoContext);
+
   const titleField = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     titleField.current?.focus();
   }, [todos]);
 
-  const completedTodos =
+  const isAllTodosCompleted =
     todos.filter(t => t.completed === true).length === todos.length
       ? true
       : false;
@@ -48,34 +47,20 @@ export const Header = () => {
     };
 
     setTodos([...todos, newTodo]);
-    setfilteredTodos([...todos, newTodo]);
 
     setTitle('');
   }
 
   function handleToggleAll() {
-    if (!isToggle && completedTodos) {
-      todos.forEach(t => {
-        t.completed = true;
-      });
-      setIsToggle(true);
-    }
-
-    if (isToggle && completedTodos) {
+    if (isAllTodosCompleted) {
       todos.forEach(t => {
         t.completed = false;
       });
-      setIsToggle(false);
-    }
-
-    if (!completedTodos) {
+    } else {
       todos.forEach(t => {
         t.completed = true;
       });
-      setIsToggle(true);
     }
-
-    setfilteredTodos(todos);
 
     setTodos([...todos]);
   }
@@ -85,8 +70,10 @@ export const Header = () => {
       {/* this button should have `active` class only if all todos are completed */}
       {todos.length && (
         <button
+          className={classNames('todoapp__toggle-all', {
+            active: isAllTodosCompleted,
+          })}
           type="button"
-          className="todoapp__toggle-all active"
           data-cy="ToggleAllButton"
           onClick={handleToggleAll}
         />
