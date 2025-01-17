@@ -51,7 +51,8 @@ export const Header = () => {
           })}
           data-cy="ToggleAllButton"
           onClick={onToggle}
-        />) : null}
+        />
+      ) : null}
 
       <form onSubmit={onSubmit}>
         <input

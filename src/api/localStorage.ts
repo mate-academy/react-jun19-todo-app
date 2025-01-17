@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Todo } from '../types/Todo';
 
-export function useLocalStorage(key: string, initialState: Todo[]) {
+export const useLocalStorage = (key: string, initialState: Todo[]) => {
   const [todos, setTodos] = useState<Todo[]>(() => {
     const savedValue = localStorage.getItem(key);
 

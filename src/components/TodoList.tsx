@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocalStorageContext } from '../context/context';
 import { TodoInfo } from './TodoInfo';
+import { FilterEnum } from '../types/Filter';
 
 export const TodoList = () => {
   const { todos, filter } = useLocalStorageContext();
@@ -8,19 +9,13 @@ export const TodoList = () => {
   const [todosToShow, setTodosToShow] = useState(todos);
 
   useEffect(() => {
-    switch (filter) {
-      case 'All':
-        setTodosToShow(todos);
-        break;
-      case 'Active':
-        setTodosToShow(todos.filter(todo => !todo.completed));
-        break;
-      case 'Completed':
-        setTodosToShow(todos.filter(todo => todo.completed));
-        break;
-      default:
-        setTodosToShow(todos);
-    }
+    const filterActions = {
+      [FilterEnum.All]: () => todos,
+      [FilterEnum.Active]: () => todos.filter((todo) => !todo.completed),
+      [FilterEnum.Completed]: () => todos.filter((todo) => todo.completed),
+    };
+  
+    setTodosToShow(filterActions[filter] ? filterActions[filter]() : todos);
   }, [filter, todos]);
 
   return (
