@@ -10,7 +10,7 @@ const page = {
   localStorage: () => cy.getAllLocalStorage().its('http://localhost:3001'),
   data: () => page.localStorage().then(({ todos = '[]' }) => JSON.parse(todos)),
 
-  visit: (initialTodos) => {
+  visit: initialTodos => {
     cy.visit('/', {
       onBeforeLoad: win => {
         if (initialTodos) {
@@ -138,7 +138,7 @@ describe('', () => {
     it('should save todos to localStorage in JSON', () => {
       page.localStorage().should('have.keys', 'todos');
 
-      page.data().then((todos) => {
+      page.data().then(todos => {
         expect(todos).to.be.instanceOf(Array);
         expect(todos).to.have.length(1);
         expect(todos[0].title).to.equal('First todo');
@@ -365,7 +365,7 @@ describe('', () => {
     it('should save updated todos to localStorage', () => {
       page.newTodoField().type('Test Todo{enter}');
 
-      page.data().then((todos) => {
+      page.data().then(todos => {
         expect(todos).to.have.length(6);
         expect(todos[5].title).to.equal('Test Todo');
         expect(todos[5].completed).to.be.false;
@@ -404,7 +404,7 @@ describe('', () => {
       page.newTodoField().type('Test Todo{enter}');
       page.newTodoField().type('Hello world{enter}');
 
-      page.data().then((todos) => {
+      page.data().then(todos => {
         expect(todos).to.have.length(7);
         expect(todos[6].title).to.equal('Hello world');
         expect(todos[6].completed).to.be.false;
@@ -441,7 +441,7 @@ describe('', () => {
       it('should save all changes to localStorage', () => {
         todos.deleteButton(0).click();
 
-        page.data().then((todos) => {
+        page.data().then(todos => {
           expect(todos).to.have.length(4);
           expect(todos[0].title).to.equal('CSS');
         });
@@ -528,7 +528,7 @@ describe('', () => {
       it('should save all changes to localStorage', () => {
         page.clearCompletedButton().click();
 
-        page.data().then((todos) => {
+        page.data().then(todos => {
           expect(todos).to.have.length(2);
           expect(todos[0].title).to.equal('TypeScript');
           expect(todos[0].completed).to.be.false;
@@ -588,7 +588,7 @@ describe('', () => {
       });
 
       it('should save changes to localStorage', () => {
-        page.data().then((todos) => {
+        page.data().then(todos => {
           expect(todos).to.have.length(5);
           expect(todos[0].title).to.equal('HTML');
           expect(todos[0].completed).to.be.false;
@@ -655,7 +655,7 @@ describe('', () => {
       it('should save changes to localStorage', () => {
         page.toggleAllButton().click();
 
-        page.data().then((todos) => {
+        page.data().then(todos => {
           expect(todos).to.have.length(5);
           expect(todos[0].completed).to.be.false;
           expect(todos[1].completed).to.be.false;
@@ -700,7 +700,7 @@ describe('', () => {
       it('should save changes to localStorage', () => {
         page.toggleAllButton().click();
 
-        page.data().then((todos) => {
+        page.data().then(todos => {
           expect(todos).to.have.length(5);
           expect(todos[0].completed).to.be.true;
           expect(todos[1].completed).to.be.true;
@@ -746,7 +746,7 @@ describe('', () => {
       it('should save changes to localStorage', () => {
         page.toggleAllButton().click();
 
-        page.data().then((todos) => {
+        page.data().then(todos => {
           expect(todos).to.have.length(5);
           expect(todos[0].completed).to.be.true;
           expect(todos[1].completed).to.be.true;
@@ -830,7 +830,7 @@ describe('', () => {
         it('should save changes to localStorage', () => {
           todos.titleField(0).type('   Some new title      {enter}');
 
-          page.data().then((todos) => {
+          page.data().then(todos => {
             expect(todos).to.have.length(5);
             expect(todos[0].title).to.equal('Some new title');
           });
@@ -871,7 +871,7 @@ describe('', () => {
           todos.titleField(0).type('   Some new title      ');
           todos.titleField(0).blur();
 
-          page.data().then((todos) => {
+          page.data().then(todos => {
             expect(todos).to.have.length(5);
             expect(todos[0].title).to.equal('Some new title');
           });
@@ -930,7 +930,7 @@ describe('', () => {
         it('should save changes to localStorage', () => {
           todos.titleField(0).type('{enter}');
 
-          page.data().then((todos) => {
+          page.data().then(todos => {
             expect(todos).to.have.length(4);
             expect(todos[0].title).to.equal('CSS');
           });
@@ -938,8 +938,6 @@ describe('', () => {
       });
 
       describe('on Escape', () => {
-
-
         it('should be closed', () => {
           todos.titleField(0).type('{esc}');
 
@@ -970,7 +968,7 @@ describe('', () => {
         it('should save changes to localStorage', () => {
           todos.titleField(0).blur();
 
-          page.data().then((todos) => {
+          page.data().then(todos => {
             expect(todos).to.have.length(4);
             expect(todos[0].title).to.equal('CSS');
           });
