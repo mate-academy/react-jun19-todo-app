@@ -21,7 +21,6 @@ export const Footer = () => {
         {activeCount} items left
       </span>
 
-      {/* Active link should have the 'selected' class */}
       <nav className="filter" data-cy="Filter">
         {Object.values(Filter).map((filter, i) => (
           <a
