@@ -3,7 +3,6 @@
 import { ChangeEvent, useContext, useState } from 'react';
 import { Todo } from '../types/Todo';
 import { TodoContext } from '../store/TodoContext';
-import './TodoApp.scss';
 import classNames from 'classnames';
 
 /* eslint-disable import/extensions */

@@ -7,7 +7,6 @@ import {
   useRef,
   useState,
 } from 'react';
-import './TodoApp.scss';
 
 import { TodoContext } from '../store/TodoContext';
 import { Todo } from '../types/Todo';
@@ -68,7 +67,7 @@ export const Header = () => {
   return (
     <header className="todoapp__header">
       {/* this button should have `active` class only if all todos are completed */}
-      {todos.length && (
+      {todos.length > 0 && (
         <button
           className={classNames('todoapp__toggle-all', {
             active: isAllTodosCompleted,
@@ -79,7 +78,6 @@ export const Header = () => {
         />
       )}
 
-      {/* Add a todo on form submit */}
       <form onSubmit={onFormSubmit}>
         <input
           autoFocus

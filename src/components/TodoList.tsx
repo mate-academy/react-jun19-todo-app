@@ -3,7 +3,6 @@
 
 import { useContext } from 'react';
 import { TodoContext } from '../store/TodoContext';
-import './TodoApp.scss';
 
 import { TodoItem } from './TodoItem';
 
