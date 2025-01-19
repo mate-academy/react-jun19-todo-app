@@ -11,7 +11,7 @@ import React, {
 
 import { Todo } from '../../types/Todo';
 
-import { DispatchContext } from '../../Store';
+import { DispatchContext, StateContext } from '../../Store';
 
 type Props = {
   todo: Todo;
@@ -20,21 +20,23 @@ type Props = {
 
 export const TodoItem: React.FC<Props> = ({ todo, nodeRef }) => {
   const dispatch = useContext(DispatchContext);
+  const { formField } = useContext(StateContext);
 
   const [title, setTitle] = useState(todo.title);
   const [isEdible, setIsEdible] = useState(false);
 
-  const formFild = useRef<HTMLInputElement>(null);
+  const innerFormFild = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isEdible) {
-      formFild.current?.focus();
+      innerFormFild.current?.focus();
     }
   }, [isEdible]);
 
   const deleteTodo = useCallback(() => {
     dispatch({ type: 'deleteTodo', payload: todo.id });
-  }, [dispatch, todo.id]);
+    formField.current?.focus();
+  }, [dispatch, formField, todo.id]);
 
   const trimmedTitle = title.trim();
 
@@ -112,7 +114,7 @@ export const TodoItem: React.FC<Props> = ({ todo, nodeRef }) => {
             className="todo__title-field"
             placeholder="Empty todo will be deleted"
             value={title}
-            ref={formFild}
+            ref={innerFormFild}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
             onChange={event => setTitle(event.target.value)}

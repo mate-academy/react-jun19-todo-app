@@ -1,24 +1,17 @@
 import classNames from 'classnames';
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { DispatchContext, StateContext } from '../../Store';
 
 export const Header = () => {
   const dispatch = useContext(DispatchContext);
-  const { activeCount, todos } = useContext(StateContext);
+  const { activeCount, todos, formField } = useContext(StateContext);
 
   const [title, setTitle] = useState('');
-  const formField = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     formField.current?.focus();
-  }, [todos]);
+  }, [formField]);
 
   const trimmedTitle = title.trim();
 
@@ -31,9 +24,10 @@ export const Header = () => {
       }
 
       dispatch({ type: 'createTodo', payload: trimmedTitle });
+      formField.current?.focus();
       setTitle('');
     },
-    [dispatch, trimmedTitle],
+    [dispatch, formField, trimmedTitle],
   );
 
   return (

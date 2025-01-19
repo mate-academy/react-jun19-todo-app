@@ -20,6 +20,7 @@ interface State {
   filter: Filter;
   activeCount: number;
   todos: Todo[];
+  formField: React.RefObject<HTMLInputElement>;
 }
 
 function loadTodos(): Todo[] {
@@ -43,6 +44,7 @@ function getInitialState(): State {
     filter: Filter.all,
     activeCount: 0,
     todos: loadTodos(),
+    formField: React.createRef(),
   };
 
   if (state.todos.length) {

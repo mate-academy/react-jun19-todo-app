@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import classNames from 'classnames';
 
 import { Filter } from '../../types/Filter';
@@ -10,10 +10,16 @@ export const Footer = () => {
   const {
     filter: currentFilter,
     activeCount,
+    formField,
     todos,
   } = useContext(StateContext);
 
   const dataCy = ['FilterLinkAll', 'FilterLinkActive', 'FilterLinkCompleted'];
+
+  const deleteCompleted = useCallback(() => {
+    dispatch({ type: 'deleteCompleted' });
+    formField.current?.focus();
+  }, [dispatch, formField]);
 
   return (
     <footer className="todoapp__footer" data-cy="Footer">
@@ -42,7 +48,7 @@ export const Footer = () => {
         className="todoapp__clear-completed"
         data-cy="ClearCompletedButton"
         disabled={activeCount === todos.length}
-        onClick={() => dispatch({ type: 'deleteCompleted' })}
+        onClick={deleteCompleted}
       >
         Clear completed
       </button>
