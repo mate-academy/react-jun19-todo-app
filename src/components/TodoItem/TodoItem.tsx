@@ -15,9 +15,10 @@ import { DispatchContext } from '../../Store';
 
 type Props = {
   todo: Todo;
+  nodeRef: React.RefObject<HTMLDivElement>;
 };
 
-export const TodoItem: React.FC<Props> = ({ todo }) => {
+export const TodoItem: React.FC<Props> = ({ todo, nodeRef }) => {
   const dispatch = useContext(DispatchContext);
 
   const [title, setTitle] = useState(todo.title);
@@ -89,6 +90,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
 
   return (
     <div
+      ref={nodeRef}
       data-cy="Todo"
       className={classNames('todo', { completed: todo.completed })}
     >
