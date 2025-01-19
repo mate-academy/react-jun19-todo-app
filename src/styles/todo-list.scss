@@ -106,7 +106,7 @@
 
 .item-enter-active {
   max-height: 58px;
-  transition: max-height 0.1s linear;
+  transition: max-height 0.3s linear;
 }
 
 .item-exit {
@@ -116,5 +116,5 @@
 
 .item-exit-active {
   max-height: 0;
-  transition: max-height 0.1s linear;
+  transition: max-height 0.3s linear;
 }
