@@ -23,9 +23,7 @@ export const Header = () => {
   }, [todos]);
 
   const isAllTodosCompleted =
-    todos.filter(t => t.completed === true).length === todos.length
-      ? true
-      : false;
+    todos.filter(t => t.completed === true).length === todos.length;
 
   function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
     setTitle(event.target.value);
