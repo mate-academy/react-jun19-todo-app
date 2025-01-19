@@ -73,6 +73,7 @@
   &__title-field {
     width: 100%;
     padding: 11px 14px;
+    box-sizing: border-box;
 
     font-size: inherit;
     line-height: inherit;
@@ -96,4 +97,24 @@
 
     opacity: 0.5;
   }
+}
+
+.item-enter {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.item-enter-active {
+  max-height: 58px;
+  transition: max-height 0.3s linear;
+}
+
+.item-exit {
+  max-height: 58px;
+  overflow: hidden;
+}
+
+.item-exit-active {
+  max-height: 0;
+  transition: max-height 0.3s linear;
 }
