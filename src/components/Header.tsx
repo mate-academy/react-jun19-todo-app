@@ -24,7 +24,7 @@ export const Header: React.FC = () => {
   }, [todos.length]);
 
   return (
-    <>
+    <header className="todoapp__header">
       {todos.length > 0 && (
         <button
           type="button"
@@ -47,6 +47,6 @@ export const Header: React.FC = () => {
           onChange={e => setTitle(e.target.value)}
         />
       </form>
-    </>
+    </header>
   );
 };
