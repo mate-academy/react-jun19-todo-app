@@ -31,7 +31,7 @@ export const useTodo = () => {
   const context = useContext(TodoContext);
 
   if (!context) {
-    throw new Error('useTodos must be used within a TodoProvider');
+    throw new Error('error');
   }
 
   return context;
