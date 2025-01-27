@@ -5,9 +5,9 @@ import { TodosContext } from '../TodoContex';
 
 export const Footer = () => {
   const {
+    todos,
     completedTodosCount,
     clearCompletedTodo,
-    todos,
     todosType,
     setTodosType,
   } = useContext(TodosContext)!;
