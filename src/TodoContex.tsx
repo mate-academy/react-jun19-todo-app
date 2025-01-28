@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Todo } from './types/Todo';
 import { TodoType } from './enums/TodoType';
 import { RefObject } from 'react';
@@ -29,6 +29,16 @@ export const TodosContext = React.createContext<TodoContextProps | undefined>(
   undefined,
 );
 
+export const useTodo = () => {
+  const context = useContext(TodosContext);
+
+  if (!context) {
+    throw new Error('error');
+  }
+
+  return context;
+};
+
 type Props = {
   children: React.ReactNode;
 };
@@ -43,15 +53,23 @@ export const TodosProvider: React.FC<Props> = ({ children }) => {
   });
   const [changingTodo, setChangingTodo] = useState<Todo | undefined>(undefined);
   const [todosType, setTodosType] = useState<TodoType>(TodoType.all);
-  const [completedTodosCount, setCompletedTodosCount] = useState(0);
-  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
+  const filteredTodos = todos.filter(todo => {
+    switch (todosType) {
+      case TodoType.active:
+        return !todo.completed;
+      case TodoType.completed:
+        return todo.completed;
+      case TodoType.all:
+      default:
+        return true;
+    }
+  });
   const titleField = useRef<HTMLInputElement>(null);
+  const completedTodosCount = todos.filter(todo => todo.completed).length;
   const USER_ID = 2262;
 
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos));
-
-    setCompletedTodosCount(todos.filter(todo => todo.completed).length);
   }, [todos]);
 
   useEffect(() => {
@@ -60,24 +78,12 @@ export const TodosProvider: React.FC<Props> = ({ children }) => {
     }
   }, [todos]);
 
-  useMemo(() => {
-    setFilteredTodos(
-      todos.filter(todo => {
-        switch (todosType) {
-          case TodoType.active:
-            return !todo.completed;
-          case TodoType.completed:
-            return todo.completed;
-          case TodoType.all:
-          default:
-            return true;
-        }
-      }),
-    );
-  }, [todos, todosType]);
-
   const handleSubmitButton = (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (title.trim() === '') {
+      return;
+    }
 
     const newTodo = {
       id: +new Date(),

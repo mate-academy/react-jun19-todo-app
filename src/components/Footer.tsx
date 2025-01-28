@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { TodoType } from '../enums/TodoType';
-import { useContext } from 'react';
-import { TodosContext } from '../TodoContex';
+import { useTodo } from '../TodoContex';
 
 export const Footer = () => {
   const {
@@ -10,7 +9,7 @@ export const Footer = () => {
     clearCompletedTodo,
     todosType,
     setTodosType,
-  } = useContext(TodosContext)!;
+  } = useTodo()!;
 
   return (
     <>

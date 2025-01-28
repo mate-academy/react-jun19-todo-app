@@ -2,8 +2,7 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import classNames from 'classnames';
 import { Todo } from '../types/Todo';
-import { useContext } from 'react';
-import { TodosContext } from '../TodoContex';
+import { useTodo } from '../TodoContex';
 
 type Props = {
   todo: Todo;
@@ -20,7 +19,7 @@ export const TodoInfo: React.FC<Props> = ({
     setChangedTitle,
     changingTodo,
     setChangingTodo,
-  } = useContext(TodosContext)!;
+  } = useTodo()!;
 
   return (
     <>

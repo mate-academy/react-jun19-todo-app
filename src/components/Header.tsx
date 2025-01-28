@@ -1,6 +1,5 @@
 import classNames from 'classnames';
-import { useContext } from 'react';
-import { TodosContext } from '../TodoContex';
+import { useTodo } from '../TodoContex';
 
 export const Header = () => {
   const {
@@ -10,7 +9,7 @@ export const Header = () => {
     titleField,
     title,
     setTitle,
-  } = useContext(TodosContext)!;
+  } = useTodo()!;
 
   return (
     <>
