@@ -2,12 +2,6 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { TodoContext } from '../context/TodoContext';
 
-// interface HeaderProps {
-//   todos: Todo[];
-//   handleAddTodo: (query: string) => void;
-//   handleToggling: (todosToToggle: Todo[]) => void;
-// }
-
 export const Header: React.FC = () => {
   const { todos, handleAddTodo, handleToggling } = useContext(TodoContext)!;
   const [query, setQuery] = useState('');

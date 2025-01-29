@@ -12,24 +12,11 @@ export const App: React.FC = () => {
         <h1 className="todoapp__title">todos</h1>
 
         <div className="todoapp__content">
-          <Header
-          // todos={todos}
-          // handleAddTodo={handleAddTodo}
-          // handleToggling={handleToggling}
-          />
+          <Header />
 
-          <TodoList
-          // todos={visibleTodos}
-          // handleDeleteTodo={handleDeleteTodo}
-          // handleUpdateTodo={handleUpdateTodo}
-          />
+          <TodoList />
 
-          <Footer
-          // todos={todos}
-          // todosType={todosType}
-          // handleTodosTypeChange={handleTodosTypeChange}
-          // handleDeleteTodo={handleDeleteTodo}
-          />
+          <Footer />
         </div>
       </div>
     </TodoProvider>

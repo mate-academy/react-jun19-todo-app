@@ -1,34 +1,36 @@
 import { Todo } from '../types/Todo';
 
 export const getAllTodos = (): Todo[] => {
-  const todos: Todo[] = [];
+  const items = localStorage.getItem('todos');
 
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
+  if (items) {
+    return JSON.parse(items);
+  } else {
+    localStorage.setItem('todos', JSON.stringify([]));
 
-    if (key) {
-      const item = localStorage.getItem(key);
-
-      if (item) {
-        const todo: Todo = JSON.parse(item);
-
-        todos.push(todo);
-      }
-    }
+    return [];
   }
-
-  return todos.sort((todo1, todo2) => todo1.id - todo2.id);
 };
 
 export const addTodo = (todo: Todo) => {
-  localStorage.setItem(`${todo.id}`, JSON.stringify(todo));
+  const todosArray = getAllTodos();
+
+  todosArray.push(todo);
+  localStorage.setItem('todos', JSON.stringify(todosArray));
 };
 
 export const deleteTodo = (todoId: number) => {
-  localStorage.removeItem(`${todoId}`);
+  const todosArray = getAllTodos();
+  const updatedTodos = todosArray.filter(todo => todo.id !== todoId);
+
+  localStorage.setItem('todos', JSON.stringify(updatedTodos));
 };
 
 export const updateTodo = (updatedTodo: Todo) => {
-  localStorage.removeItem(`${updatedTodo.id}`);
-  localStorage.setItem(`${updatedTodo.id}`, JSON.stringify(updatedTodo));
+  const todosArray = getAllTodos();
+  const updatedTodos = todosArray.map(todo =>
+    todo.id === updatedTodo.id ? updatedTodo : todo,
+  );
+
+  localStorage.setItem('todos', JSON.stringify(updatedTodos));
 };

@@ -3,13 +3,6 @@ import { FilterType } from '../types/FilterType';
 import { useContext } from 'react';
 import { TodoContext } from '../context/TodoContext';
 
-// interface FooterProps {
-//   todos: Todo[];
-//   todosType: FilterType;
-//   handleTodosTypeChange: (todosType: FilterType) => void;
-//   handleDeleteTodo: (todoId: number) => void;
-// }
-
 export const Footer: React.FC = () => {
   const { todos, todosType, handleDeleteTodo, handleTodosTypeChange } =
     useContext(TodoContext)!;

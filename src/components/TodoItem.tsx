@@ -51,10 +51,8 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   };
 
   const handleOnBlur = () => {
-    setTimeout(() => {
-      setIsEditing(false);
-      handleSubmit();
-    }, 100);
+    setIsEditing(false);
+    handleSubmit();
   };
 
   return (
