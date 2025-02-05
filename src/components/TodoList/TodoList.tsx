@@ -1,13 +1,15 @@
-import { useContext } from 'react';
+import React from 'react';
 import { TodoItem } from '../TodoItem/TodoItem';
-import { StateContext } from '../../GlobalProvider/GlobalProvider';
+import { Todo } from '../../types/Todo';
 
-export const TodoList = () => {
-  const todos = useContext(StateContext);
+type Props = {
+  filteredTodos: Todo[];
+};
 
+export const TodoList: React.FC<Props> = ({ filteredTodos }) => {
   return (
     <section className="todoapp__main" data-cy="TodoList">
-      {todos.map(todo => (
+      {filteredTodos.map(todo => (
         <TodoItem key={todo.id} todo={todo} />
       ))}
     </section>

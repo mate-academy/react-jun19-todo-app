@@ -118,14 +118,16 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
         </span>
       )}
 
-      <button
-        type="button"
-        className="todo__remove"
-        data-cy="TodoDelete"
-        onClick={() => handleDeleteTodo(todo.id)}
-      >
-        ×
-      </button>
+      {!isEditing && (
+        <button
+          type="button"
+          className="todo__remove"
+          data-cy="TodoDelete"
+          onClick={() => handleDeleteTodo(todo.id)}
+        >
+          ×
+        </button>
+      )}
     </div>
   );
 };

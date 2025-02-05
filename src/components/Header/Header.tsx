@@ -19,7 +19,7 @@ export const Header = () => {
 
   useEffect(() => {
     inputRef.current?.focus();
-  }, []);
+  }, [todos]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
