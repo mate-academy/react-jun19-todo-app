@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import {
   DispatchContext,
   StateContext,
@@ -6,19 +6,20 @@ import {
 import { FilterType } from '../../types/FilterType';
 import classNames from 'classnames';
 
-export const Footer = () => {
+type Props = {
+  filterTodoBy: string;
+  setFilterTodoBy: (value: FilterType) => void;
+};
+
+export const Footer: React.FC<Props> = ({ filterTodoBy, setFilterTodoBy }) => {
   const todos = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
-
-  const [filterTodoBy, setFilterTodoBy] = useState<FilterType>(FilterType.ALL);
 
   const visibileTodo = todos.filter(todo => !todo.completed);
   const disabledBtn = todos.some(todo => todo.completed);
 
   const handleFilterTodos = (value: FilterType) => {
     setFilterTodoBy(value);
-
-    dispatch({ type: 'filterTodo', payload: value });
   };
 
   const handleClearCompletedTodos = () => {

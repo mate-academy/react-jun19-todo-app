@@ -1,13 +1,11 @@
 import React, { useReducer } from 'react';
 import { Todo } from '../types/Todo';
-import { FilterType } from '../types/FilterType';
 
 type Action =
   | { type: 'addTodo'; payload: Todo }
   | { type: 'updateTodoStatus'; payload: number }
   | { type: 'updateTodoTitle'; payload: Todo }
   | { type: 'deleteTodo'; payload: number }
-  | { type: 'filterTodo'; payload: string }
   | { type: 'toggleAll' }
   | { type: 'clearCompleted' };
 
@@ -36,18 +34,6 @@ function reducer(state: Todo[], action: Action): Todo[] {
       }));
     case 'deleteTodo':
       return state.filter(todo => todo.id !== action.payload);
-    case 'filterTodo':
-      return state.filter(todo => {
-        if (action.payload === FilterType.ACTIVE) {
-          return !todo.completed;
-        }
-
-        if (action.payload === FilterType.COMPLETED) {
-          return todo.completed;
-        }
-
-        return true;
-      });
 
     case 'clearCompleted':
       return state.filter(todo => !todo.completed);
