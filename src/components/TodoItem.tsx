@@ -9,7 +9,9 @@ type Props = {
   todo: Todo;
 };
 
-export const TodoItem: React.FC<Props> = ({ todo }) => {
+export const TodoItem: React.FC<Props> = ({
+  todo: { id, title, completed },
+}) => {
   const { deleteTodo, updateTodo } = useTodos();
   const [editingTodoId, setEditingTodoId] = useState<string | null>(null);
   const [titleText, setTitleText] = useState<string>('');
@@ -18,9 +20,9 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
     const trimmedTitleText = titleText.trim();
 
     if (!trimmedTitleText) {
-      deleteTodo(todo.id);
-    } else if (trimmedTitleText !== todo.title) {
-      updateTodo({ ...todo, title: trimmedTitleText });
+      deleteTodo(id);
+    } else if (trimmedTitleText !== title) {
+      updateTodo({ id, title: trimmedTitleText, completed });
     }
 
     setEditingTodoId(null);
@@ -34,33 +36,31 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
     }
   };
 
-  const handleKeyUp = (
-    event: React.KeyboardEvent<HTMLInputElement>,
-    title: string,
-  ) => {
+  const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Escape') {
       setTitleText(title);
       setEditingTodoId(null);
     }
   };
 
+  const handleDoubleClick = () => {
+    setEditingTodoId(id);
+    setTitleText(title);
+  };
+
   return (
-    <div
-      key={todo.id}
-      data-cy="Todo"
-      className={cn('todo', { completed: todo.completed })}
-    >
+    <div key={id} data-cy="Todo" className={cn('todo', { completed })}>
       <label className="todo__status-label">
         <input
           data-cy="TodoStatus"
           type="checkbox"
           className="todo__status"
-          checked={todo.completed}
-          onChange={() => updateTodo({ ...todo, completed: !todo.completed })}
+          checked={completed}
+          onChange={() => updateTodo({ id, title, completed: !completed })}
         />
       </label>
 
-      {editingTodoId === todo.id ? (
+      {editingTodoId === id ? (
         <form>
           <input
             data-cy="TodoTitleField"
@@ -69,8 +69,8 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
             placeholder="Empty todo will be deleted"
             value={titleText}
             onBlur={handleSaveUpdated}
-            onKeyDown={event => handleKeyDown(event)}
-            onKeyUp={event => handleKeyUp(event, todo.title)}
+            onKeyDown={handleKeyDown}
+            onKeyUp={handleKeyUp}
             onChange={event => setTitleText(event.target.value)}
             autoFocus
           />
@@ -79,12 +79,9 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
         <span
           data-cy="TodoTitle"
           className="todo__title"
-          onDoubleClick={() => {
-            setEditingTodoId(todo.id);
-            setTitleText(todo.title);
-          }}
+          onDoubleClick={handleDoubleClick}
         >
-          {todo.title}
+          {title}
         </span>
       )}
 
@@ -93,7 +90,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
           type="button"
           className="todo__remove"
           data-cy="TodoDelete"
-          onClick={() => deleteTodo(todo.id)}
+          onClick={() => deleteTodo(id)}
         >
           ×
         </button>

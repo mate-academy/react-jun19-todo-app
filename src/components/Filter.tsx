@@ -28,10 +28,7 @@ export const Filter: React.FC<Props> = ({ filter, setFilter }) => (
           selected: filter === type,
         })}
         data-cy={dataCy}
-        onClick={event => {
-          event.preventDefault();
-          setFilter(type);
-        }}
+        onClick={() => setFilter(type)}
       >
         {type}
       </a>
