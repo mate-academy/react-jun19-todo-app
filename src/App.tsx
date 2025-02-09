@@ -1,7 +1,5 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useEffect, useRef, useState } from 'react';
 
-import { FilterType } from './types/FilterType';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { TodoList } from './components/TodoList';
@@ -10,7 +8,6 @@ import { useTodos } from './components/TodosContext';
 export const App: React.FC = () => {
   const { todos, setTodos } = useTodos();
   const [query, setQuery] = useState<string>('');
-  const [filter, setFilter] = useState<FilterType>(FilterType.All);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -44,9 +41,9 @@ export const App: React.FC = () => {
           inputRef={inputRef}
         />
 
-        {todos.length > 0 && <TodoList filter={filter} />}
+        {todos.length > 0 && <TodoList />}
 
-        {todos.length > 0 && <Footer filter={filter} setFilter={setFilter} />}
+        {todos.length > 0 && <Footer />}
       </div>
     </div>
   );

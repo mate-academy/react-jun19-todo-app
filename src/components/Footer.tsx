@@ -1,15 +1,9 @@
 import React from 'react';
 
-import { FilterType } from '../types/FilterType';
 import { Filter } from './Filter';
 import { useTodos } from './TodosContext';
 
-type Props = {
-  filter: FilterType;
-  setFilter: (filter: FilterType) => void;
-};
-
-export const Footer: React.FC<Props> = ({ filter, setFilter }) => {
+export const Footer: React.FC = () => {
   const { todos, setTodos } = useTodos();
 
   const numberOfActiveTodos = todos.filter(todo => !todo.completed).length;
@@ -26,7 +20,7 @@ export const Footer: React.FC<Props> = ({ filter, setFilter }) => {
         {numberOfActiveTodos} items left
       </span>
 
-      <Filter filter={filter} setFilter={setFilter} />
+      <Filter />
 
       <button
         type="button"

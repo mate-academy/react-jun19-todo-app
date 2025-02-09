@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 import { Todo } from '../types/Todo';
+import { FilterType } from '../types/FilterType';
 
 const getTodos = (): Todo[] => {
   const data = localStorage.getItem('todos');
@@ -20,6 +21,8 @@ interface TodosContextType {
   addTodo: (title: string) => void;
   deleteTodo: (id: string) => void;
   updateTodo: (updatedTodo: Todo) => void;
+  filter: FilterType;
+  setFilter: React.Dispatch<React.SetStateAction<FilterType>>;
 }
 
 export const TodosContext = React.createContext<TodosContextType | undefined>(
@@ -30,10 +33,17 @@ export const TodosProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [todos, setTodos] = useState<Todo[]>(getTodos());
+  const [filter, setFilter] = useState<FilterType>(() => {
+    return (sessionStorage.getItem('filter') as FilterType) || FilterType.All;
+  });
 
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos));
   }, [todos]);
+
+  useEffect(() => {
+    sessionStorage.setItem('filter', filter);
+  }, [filter]);
 
   const value = useMemo(() => {
     const addTodo = (title: string) => {
@@ -48,14 +58,12 @@ export const TodosProvider: React.FC<{ children: React.ReactNode }> = ({
       };
 
       setTodos(prevTodos => [...prevTodos, newTodo]);
-      localStorage.setItem('todos', JSON.stringify([...todos, newTodo]));
     };
 
     const deleteTodo = (id: string) => {
       const updatedTodos = todos.filter(todo => todo.id !== id);
 
       setTodos(updatedTodos);
-      localStorage.setItem('todos', JSON.stringify(updatedTodos));
     };
 
     const updateTodo = (updatedTodo: Todo) => {
@@ -64,11 +72,18 @@ export const TodosProvider: React.FC<{ children: React.ReactNode }> = ({
       );
 
       setTodos(updatedTodos);
-      localStorage.setItem('todos', JSON.stringify(updatedTodos));
     };
 
-    return { todos, setTodos, addTodo, deleteTodo, updateTodo };
-  }, [todos]);
+    return {
+      todos,
+      setTodos,
+      addTodo,
+      deleteTodo,
+      updateTodo,
+      filter,
+      setFilter,
+    };
+  }, [todos, filter]);
 
   return (
     <TodosContext.Provider value={value}>{children}</TodosContext.Provider>

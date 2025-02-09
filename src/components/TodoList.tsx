@@ -4,12 +4,8 @@ import { FilterType } from '../types/FilterType';
 import { TodoItem } from './TodoItem';
 import { useTodos } from './TodosContext';
 
-type Props = {
-  filter: FilterType;
-};
-
-export const TodoList: React.FC<Props> = ({ filter }) => {
-  const { todos } = useTodos();
+export const TodoList: React.FC = () => {
+  const { todos, filter } = useTodos();
 
   const filteredTodos = todos.filter(todo => {
     switch (filter) {
