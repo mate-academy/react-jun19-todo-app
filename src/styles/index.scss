@@ -1,3 +1,7 @@
+@use './todoapp';
+@use './todo-list';
+@use './filters';
+
 iframe {
   display: none;
 }
@@ -19,7 +23,3 @@ body {
   opacity: 0;
   pointer-events: none;
 }
-
-@import './todoapp';
-@import './todo-list';
-@import './filters';
