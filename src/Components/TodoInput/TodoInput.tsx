@@ -66,7 +66,7 @@ export const TodoInput = () => {
           placeholder="What needs to be done?"
           value={newTodo}
           onChange={handleChange}
-          onKeyDown={handleAdd}
+          onKeyUp={handleAdd}
         />
       </form>
     </header>

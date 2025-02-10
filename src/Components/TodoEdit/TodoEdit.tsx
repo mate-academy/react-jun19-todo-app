@@ -55,7 +55,7 @@ export const TodoEdit: React.FC<Props> = ({ title, id }) => {
         placeholder="Empty todo will be deleted"
         value={newTodoTitle}
         onBlur={handleBlur}
-        onKeyUp={event => handleChange(event)}
+        onKeyDown={event => handleChange(event)}
         onChange={event => setNewTodo(event.target.value)}
       />
     </form>

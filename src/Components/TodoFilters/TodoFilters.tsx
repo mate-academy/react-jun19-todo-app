@@ -37,18 +37,18 @@ export const TodoFilters = () => {
 
             <a
               href="#/active"
-              className={`filter__link ${currentFilter === 'COMPLETED' && 'selected'}`}
+              className={`filter__link ${currentFilter === 'ACTIVE' && 'selected'}`}
               data-cy="FilterLinkActive"
-              onClick={() => handleFilterChange('COMPLETED')}
+              onClick={() => handleFilterChange('ACTIVE')}
             >
               Active
             </a>
 
             <a
               href="#/completed"
-              className={`filter__link ${currentFilter === 'ACTIVE' && 'selected'}`}
+              className={`filter__link ${currentFilter === 'COMPLETED' && 'selected'}`}
               data-cy="FilterLinkCompleted"
-              onClick={() => handleFilterChange('ACTIVE')}
+              onClick={() => handleFilterChange('COMPLETED')}
             >
               Completed
             </a>

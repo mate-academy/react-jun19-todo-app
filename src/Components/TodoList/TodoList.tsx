@@ -11,7 +11,7 @@ export const TodoList = () => {
   useEffect(() => {
     if (filter === 'ALL') {
       setVisibleTodos(todos);
-    } else if (filter === 'ACTIVE') {
+    } else if (filter === 'COMPLETED') {
       setVisibleTodos(todos.filter(todo => todo.completed));
     } else {
       setVisibleTodos(todos.filter(todo => !todo.completed));
