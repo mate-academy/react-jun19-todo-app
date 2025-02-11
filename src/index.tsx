@@ -1,11 +1,15 @@
 import { createRoot } from 'react-dom/client';
 
-import './styles/index.css';
-import './styles/todo-list.css';
-import './styles/filters.css';
+import 'bulma/css/bulma.css';
+import '@fortawesome/fontawesome-free/css/all.css';
+import './styles/index.scss';
 
 import { App } from './App';
 
-const container = document.getElementById('root') as HTMLDivElement;
+import { TodoProvider } from './context/TodoContext';
 
-createRoot(container).render(<App />);
+createRoot(document.getElementById('root') as HTMLDivElement).render(
+  <TodoProvider>
+    <App />
+  </TodoProvider>,
+);
