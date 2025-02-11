@@ -6,11 +6,23 @@ export type Todo = {
   completed: boolean;
 };
 
-const FILTERS = {
+export const FILTERS = {
   ALL: 'ALL',
   ACTIVE: 'ACTIVE',
   COMPLETED: 'COMPLETED',
 } as const;
+
+export const ACTIONS = {
+  ADD_TODO: 'ADD_TODO',
+  RENAME_TODO: 'RENAME_TODO',
+  DELETE_TODO: 'DELETE_TODO',
+  SET_FILTER: 'SET_FILTER',
+  TOGGLE_TODO: 'TOGGLE_TODO',
+  TOGGLE_ALL: 'TOGGLE_ALL',
+  DELETE_COMPLETED: 'DELETE_COMPLETED',
+} as const;
+
+export type ActionType = (typeof ACTIONS)[keyof typeof ACTIONS];
 
 export type FilterType = (typeof FILTERS)[keyof typeof FILTERS];
 
@@ -30,13 +42,13 @@ export const TodosContext = createContext<Context>({
 });
 
 type Action =
-  | { type: 'ADD_TODO'; payload: Todo }
-  | { type: 'RENAME_TODO'; payload: { id: number; title: string } }
-  | { type: 'DELETE_TODO'; payload: { id: number } }
-  | { type: 'SET_FILTER'; payload: FilterType }
-  | { type: 'TOGGLE_TODO'; payload: { id: number } }
-  | { type: 'TOGGLE_ALL'; payload: Todo[] }
-  | { type: 'DELETE_COMPLETED'; payload: Todo[] };
+  | { type: typeof ACTIONS.ADD_TODO; payload: Todo }
+  | { type: typeof ACTIONS.RENAME_TODO; payload: { id: number; title: string } }
+  | { type: typeof ACTIONS.DELETE_TODO; payload: { id: number } }
+  | { type: typeof ACTIONS.SET_FILTER; payload: FilterType }
+  | { type: typeof ACTIONS.TOGGLE_TODO; payload: { id: number } }
+  | { type: typeof ACTIONS.TOGGLE_ALL; payload: Todo[] }
+  | { type: typeof ACTIONS.DELETE_COMPLETED; payload: Todo[] };
 
 const addTodo = (todos: Todo[], newTodo: Todo) => [...todos, newTodo];
 
@@ -79,10 +91,10 @@ export const todosReducer = (state: State, action: Action): State => {
   const { type, payload } = action;
 
   switch (type) {
-    case 'ADD_TODO':
+    case ACTIONS.ADD_TODO:
       return { ...state, todos: addTodo(todos, payload) };
 
-    case 'RENAME_TODO': {
+    case ACTIONS.RENAME_TODO: {
       const { id, title } = payload;
 
       return {
@@ -91,16 +103,16 @@ export const todosReducer = (state: State, action: Action): State => {
       };
     }
 
-    case 'DELETE_TODO': {
+    case ACTIONS.DELETE_TODO: {
       const { id } = payload;
 
       return { ...state, todos: deleteTodo(todos, id) };
     }
 
-    case 'SET_FILTER':
+    case ACTIONS.SET_FILTER:
       return { ...state, filter: payload };
 
-    case 'TOGGLE_TODO':
+    case ACTIONS.TOGGLE_TODO:
       const { id } = payload;
 
       return {
@@ -108,10 +120,10 @@ export const todosReducer = (state: State, action: Action): State => {
         todos: toggleTodo(todos, id),
       };
 
-    case 'TOGGLE_ALL':
+    case ACTIONS.TOGGLE_ALL:
       return { ...state, todos: toggleAll(todos) };
 
-    case 'DELETE_COMPLETED':
+    case ACTIONS.DELETE_COMPLETED:
       return { ...state, todos: deleteCompleted(todos) };
 
     default:

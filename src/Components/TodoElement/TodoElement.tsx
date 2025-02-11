@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Todo, TodosContext } from '../../Context/TodoContext';
+import { ACTIONS, Todo, TodosContext } from '../../Context/TodoContext';
 import { useContext } from 'react';
 import { TodoEdit } from '../TodoEdit';
 import { EditContext } from '../../Context/EditContext';
@@ -14,11 +14,11 @@ export const TodoElement: React.FC<Props> = ({ todo }) => {
   const { editedTodoId, setEditedTodoId } = useContext(EditContext);
 
   const handleToggle = () => {
-    dispatch({ type: 'TOGGLE_TODO', payload: { id } });
+    dispatch({ type: ACTIONS.TOGGLE_TODO, payload: { id } });
   };
 
   const handleDelete = () => {
-    dispatch({ type: 'DELETE_TODO', payload: { id } });
+    dispatch({ type: ACTIONS.DELETE_TODO, payload: { id } });
   };
 
   const completedTodoClass = classNames('todo', {

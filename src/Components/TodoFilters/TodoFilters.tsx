@@ -1,21 +1,30 @@
 import { useContext, useState } from 'react';
-import { FilterType, TodosContext } from '../../Context/TodoContext';
+import {
+  ACTIONS,
+  FILTERS,
+  FilterType,
+  TodosContext,
+} from '../../Context/TodoContext';
+import classNames from 'classnames';
 
 export const TodoFilters = () => {
   const { state, dispatch } = useContext(TodosContext);
   const { todos } = state;
-  const [currentFilter, setcurrentFilter] = useState<FilterType>('ALL');
+  const [currentFilter, setcurrentFilter] = useState<FilterType>(FILTERS.ALL);
 
   const todosLeft = todos.filter(todo => !todo.completed).length;
 
   const handleFilterChange = (type: FilterType) => {
-    dispatch({ type: 'SET_FILTER', payload: `${type}` });
+    dispatch({ type: ACTIONS.SET_FILTER, payload: `${type}` });
     setcurrentFilter(type);
   };
 
   const handleClearAll = () => {
-    dispatch({ type: 'DELETE_COMPLETED', payload: todos });
+    dispatch({ type: ACTIONS.DELETE_COMPLETED, payload: todos });
   };
+
+  const getFilterClass = (filter: FilterType) =>
+    classNames('filter__link', { selected: currentFilter === filter });
 
   return (
     <>
@@ -28,27 +37,27 @@ export const TodoFilters = () => {
           <nav className="filter" data-cy="Filter">
             <a
               href="#/"
-              className={`filter__link ${currentFilter === 'ALL' && 'selected'}`}
+              className={getFilterClass(FILTERS.ALL)}
               data-cy="FilterLinkAll"
-              onClick={() => handleFilterChange('ALL')}
+              onClick={() => handleFilterChange(FILTERS.ALL)}
             >
               All
             </a>
 
             <a
               href="#/active"
-              className={`filter__link ${currentFilter === 'ACTIVE' && 'selected'}`}
+              className={getFilterClass(FILTERS.ACTIVE)}
               data-cy="FilterLinkActive"
-              onClick={() => handleFilterChange('ACTIVE')}
+              onClick={() => handleFilterChange(FILTERS.ACTIVE)}
             >
               Active
             </a>
 
             <a
               href="#/completed"
-              className={`filter__link ${currentFilter === 'COMPLETED' && 'selected'}`}
+              className={getFilterClass(FILTERS.COMPLETED)}
               data-cy="FilterLinkCompleted"
-              onClick={() => handleFilterChange('COMPLETED')}
+              onClick={() => handleFilterChange(FILTERS.COMPLETED)}
             >
               Completed
             </a>

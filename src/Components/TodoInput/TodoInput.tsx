@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { TodosContext } from '../../Context/TodoContext';
+import { ACTIONS, TodosContext } from '../../Context/TodoContext';
 import classNames from 'classnames';
 
 export const TodoInput = () => {
@@ -27,13 +27,13 @@ export const TodoInput = () => {
     }
 
     if (event.key === 'Enter' && newTodo.trim() !== '') {
-      dispatch({ type: 'ADD_TODO', payload: createNewTodo() });
+      dispatch({ type: ACTIONS.ADD_TODO, payload: createNewTodo() });
       setNewTodo('');
     }
   };
 
   const handleToggleAll = () => {
-    dispatch({ type: 'TOGGLE_ALL', payload: state.todos });
+    dispatch({ type: ACTIONS.TOGGLE_ALL, payload: state.todos });
   };
 
   const toggleAllClass = classNames('todoapp__toggle-all', {

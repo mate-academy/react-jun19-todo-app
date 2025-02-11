@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { TodosContext } from '../../Context/TodoContext';
+import { ACTIONS, TodosContext } from '../../Context/TodoContext';
 import { EditContext } from '../../Context/EditContext';
 
 type Props = {
@@ -14,14 +14,14 @@ export const TodoEdit: React.FC<Props> = ({ title, id }) => {
 
   const checkNewValue = (newTitle: string) => {
     if (newTitle.length === 0) {
-      dispatch({ type: 'DELETE_TODO', payload: { id } });
+      dispatch({ type: ACTIONS.DELETE_TODO, payload: { id } });
       setEditedTodoId(null);
 
       return;
     }
 
     if (newTitle !== title) {
-      dispatch({ type: 'RENAME_TODO', payload: { id, title: newTitle } });
+      dispatch({ type: ACTIONS.RENAME_TODO, payload: { id, title: newTitle } });
     }
 
     setEditedTodoId(null);
