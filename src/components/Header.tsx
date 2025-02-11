@@ -32,7 +32,7 @@ export const Header: React.FC<Props> = ({
     if (!todo) {
       inputRef.current?.focus();
     }
-  }, [todos]);
+  }, [todos, todo]);
 
   return (
     <header className="todoapp__header">
