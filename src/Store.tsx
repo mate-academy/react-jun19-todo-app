@@ -11,7 +11,7 @@ type Action =
   | { type: 'setSaveingIds'; payload: number }
   | { type: 'removeSaveingId'; payload: number }
   | { type: 'setEditingTodo'; payload: Todo | null }
-  | { type: 'saveALL' };
+  | { type: 'toggleAll' };
 
 interface State {
   todos: Todo[];
@@ -74,7 +74,7 @@ function reducer(state: State, action: Action): State {
         todos: state.todos.filter(el => !el.completed),
       };
 
-    case 'saveALL':
+    case 'toggleAll':
       const allCompleted = state.todos.every(todo => todo.completed);
       const allActive = state.todos.every(todo => !todo.completed);
 

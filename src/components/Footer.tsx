@@ -1,21 +1,20 @@
 import cn from 'classnames';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useMemo } from 'react';
 import { DispatchContext, StateContext } from '../Store';
 import { Filter } from '../types/Filter';
 
 export const Footer = () => {
   const { todos, filter } = useContext(StateContext);
   const dispatch = useContext(DispatchContext);
-  const [itemsLeft, setItemsLeft] = useState(0);
-  const [hasCompletedTodos, setHasCompletedTodos] = useState(false);
 
-  useEffect(() => {
-    const remainingItems = todos.filter(todo => !todo.completed).length;
-    const isTodoCompleted = todos.some(todo => todo.completed);
-
-    setItemsLeft(remainingItems);
-    setHasCompletedTodos(isTodoCompleted);
-  }, [todos]);
+  const itemsLeft = useMemo(
+    () => todos.filter(todo => !todo.completed).length,
+    [todos],
+  );
+  const hasCompletedTodos = useMemo(
+    () => todos.some(todo => todo.completed),
+    [todos],
+  );
 
   const handleFilterChange = (value: Filter) => {
     dispatch({ type: 'setFilter', payload: value });

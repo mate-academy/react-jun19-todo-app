@@ -21,7 +21,7 @@ export const Header = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newTodoTitle.trim() === '') {
+    if (!newTodoTitle.trim()) {
       return;
     }
 
@@ -35,8 +35,8 @@ export const Header = () => {
     setNewTodoTitle('');
   };
 
-  const handleSaveAll = async () => {
-    dispatch({ type: 'saveALL' });
+  const handleToggleAll = async () => {
+    dispatch({ type: 'toggleAll' });
   };
 
   return (
@@ -48,7 +48,7 @@ export const Header = () => {
             active: todos.length > 0 && todos.every(a => a.completed),
           })}
           data-cy="ToggleAllButton"
-          onClick={handleSaveAll}
+          onClick={handleToggleAll}
         />
       )}
 
