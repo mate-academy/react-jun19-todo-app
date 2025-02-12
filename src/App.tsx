@@ -17,10 +17,7 @@ export const App: React.FC = () => {
         <TodoList />
         {todos.length > 0 && <Footer />}
 
-
-
         {/* Hide the footer if there are no todos */}
-       
       </div>
     </div>
   );
