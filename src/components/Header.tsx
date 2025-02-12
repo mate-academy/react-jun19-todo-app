@@ -13,7 +13,7 @@ export const Header = () => {
     if (editingTodo === null) {
       inputRef.current?.focus();
     }
-  }, [editingTodo]);
+  }, [editingTodo, todos]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewTodoTitle(e.target.value);
@@ -41,14 +41,16 @@ export const Header = () => {
 
   return (
     <header className="todoapp__header">
-      <button
-        type="button"
-        className={cn('todoapp__toggle-all', {
-          active: todos.length > 0 && todos.every(a => a.completed),
-        })}
-        data-cy="ToggleAllButton"
-        onClick={handleSaveAll}
-      />
+      {todos.length > 0 && (
+        <button
+          type="button"
+          className={cn('todoapp__toggle-all', {
+            active: todos.length > 0 && todos.every(a => a.completed),
+          })}
+          data-cy="ToggleAllButton"
+          onClick={handleSaveAll}
+        />
+      )}
 
       <form onSubmit={handleSubmit}>
         <input
