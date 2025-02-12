@@ -8,8 +8,6 @@ type Action =
   | { type: 'deleteTodo'; payload: number }
   | { type: 'clearCompleted' }
   | { type: 'setFilter'; payload: Filter }
-  | { type: 'setSaveingIds'; payload: number }
-  | { type: 'removeSaveingId'; payload: number }
   | { type: 'setEditingTodo'; payload: Todo | null }
   | { type: 'toggleAll' };
 
@@ -46,20 +44,6 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         filter: action.payload,
-      };
-
-    case 'setSaveingIds':
-      return {
-        ...state,
-        saveingIds: state.saveingIds.includes(action.payload)
-          ? state.saveingIds
-          : [...state.saveingIds, action.payload],
-      };
-
-    case 'removeSaveingId':
-      return {
-        ...state,
-        saveingIds: state.saveingIds.filter(id => id !== action.payload),
       };
 
     case 'setEditingTodo':
