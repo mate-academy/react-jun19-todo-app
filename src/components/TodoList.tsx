@@ -19,7 +19,7 @@ type Props = {
   handleBlur: (todoItem: Todo) => void;
   deleteTodoHandler: (todoId: number) => void;
 };
-export const Section: React.FC<Props> = ({
+export const TodoList: React.FC<Props> = ({
   filter,
   updateCompleted,
   changeTodoId,

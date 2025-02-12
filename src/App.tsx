@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect, useState } from 'react';
 import { Todo } from './types/Todo';
 import { FilterType } from './types/FilterType';
 import { Header } from './components/Header';
-import { Section } from './components/Section';
+import { TodoList } from './components/TodoList';
 import { Footer } from './components/Footer';
 import { useTodos } from './context/TodoContext';
 
@@ -99,7 +99,7 @@ export const App: React.FC = () => {
           changeTodoId={changeTodoId}
           updateCompleted={updateCompleted}
         />
-        <Section
+        <TodoList
           filter={filter}
           updateCompleted={updateCompleted}
           changeTodoId={changeTodoId}
