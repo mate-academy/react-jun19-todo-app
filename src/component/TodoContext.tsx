@@ -1,5 +1,4 @@
-import React, { useContext, useState } from 'react';
-import { createContext } from 'react';
+import React, { createContext, useState } from 'react';
 
 export interface Todo {
   id: number;
@@ -16,16 +15,14 @@ interface TodoContextType {
   clearCompleted: () => void;
 }
 
-const TodoContext = createContext<TodoContextType | undefined>(undefined);
+export const TodoContext = createContext<TodoContextType | undefined>(
+  undefined,
+);
 
 export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [todos, setTodos] = useState<Todo[]>([]);
-
-  const todoContext = useContext(TodoContext);
-
-  const { todos, handleAddTodo, setTodos } = todoContext;
 
   const handleAddTodo = (title: string) => {
     if (title.trim()) {
@@ -33,8 +30,6 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         ...prev,
         { id: Date.now(), title: title.trim(), completed: false },
       ]);
-      setTitle('');
-      inputRef.current?.focus();
     }
   };
 
@@ -57,7 +52,7 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const clearCompleted = () => {
-    setTodos(todos.filter(todo => !todo.completed));
+    setTodos(prev => prev.filter(todo => !todo.completed));
   };
 
   return (

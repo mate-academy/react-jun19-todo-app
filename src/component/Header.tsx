@@ -1,4 +1,5 @@
 import React, { RefObject, useContext, useEffect, useState } from 'react';
+import { TodoContext } from './TodoContext';
 
 interface HeaderProps {
   inputRef: RefObject<HTMLInputElement>;
@@ -9,15 +10,20 @@ export const Header: React.FC<HeaderProps> = ({ inputRef }) => {
 
   const todoContext = useContext(TodoContext);
 
-  const { todos, handleAddTodo, setTodos } = todoContext;
+  if (!todoContext) {
+    return null;
+  }
+
+  const { todos, handleAddTodo, handleToggle } = todoContext;
 
   useEffect(() => {
     inputRef.current?.focus();
   }, [inputRef]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleAddTodo();
+    if (e.key === 'Enter' && title.trim()) {
+      handleAddTodo(title);
+      setTitle('');
     } else if (e.key === 'Escape') {
       setTitle('');
     }
@@ -25,26 +31,27 @@ export const Header: React.FC<HeaderProps> = ({ inputRef }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleAddTodo();
+    if (title.trim()) {
+      handleAddTodo(title);
+      setTitle('');
+    }
   };
 
   const allCompleted = todos.length > 0 && todos.every(todo => todo.completed);
 
   return (
     <header className="todoapp__header">
-      {/* this button should have `active` class only if all todos are completed */}
+      {/* Кнопка для позначення всіх завдань як виконані */}
       <button
         type="button"
         className={`todoapp__toggle-all ${allCompleted ? 'active' : ''}`}
         data-cy="ToggleAllButton"
         onClick={() => {
-          setTodos(prev =>
-            prev.map(todo => ({ ...todo, completed: !allCompleted })),
-          );
+          todos.forEach(todo => handleToggle(todo.id));
         }}
       />
 
-      {/* Add a todo on form submit */}
+      {/* Поле для введення нової задачі */}
       <form onSubmit={handleSubmit}>
         <input
           data-cy="NewTodoField"
