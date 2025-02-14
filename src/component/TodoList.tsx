@@ -1,36 +1,11 @@
 import { Status } from '../types/statys';
-import { Todo } from './TodoContext';
 import { TodoItem } from './TodoItem';
 
 interface TodoListProps {
-  todos: Todo[];
   filter: Status;
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 }
 
-export const TodoList: React.FC<TodoListProps> = ({
-  todos,
-  filter,
-  setTodos,
-}) => {
-  const hangleToggle = (id: number) => {
-    setTodos(prev =>
-      prev.map(todo =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-      ),
-    );
-  };
-
-  const handleEdit = (id: number, title: string) => {
-    setTodos(prev =>
-      prev.map(todo => (todo.id === id ? { ...todo, title } : todo)),
-    );
-  };
-
-  const handleDelete = (id: number) => {
-    setTodos(prev => prev.filter(todo => todo.id !== id));
-  };
-
+export const TodoList: React.FC<TodoListProps> = ({ filter }) => {
   const filteredTodos = todos.filter(todo => {
     if (filter === Status.ACTIVE) {
       return !todo.completed;
@@ -49,7 +24,7 @@ export const TodoList: React.FC<TodoListProps> = ({
         <TodoItem
           key={todo.id}
           todo={todo}
-          hangleToggle={hangleToggle}
+          handleToggle={handleToggle}
           handleDelete={handleDelete}
           handleEdit={handleEdit}
         />

@@ -4,14 +4,14 @@ import { Todo } from './TodoContext';
 interface TodoItemProps {
   todo: Todo;
   handleEdit: (id: number, title: string) => void;
-  hangleToggle: (id: number) => void;
+  handleToggle: (id: number) => void;
   handleDelete: (id: number) => void;
 }
 
 export const TodoItem: React.FC<TodoItemProps> = ({
   todo,
   handleDelete,
-  hangleToggle,
+  handleToggle,
   handleEdit,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -49,7 +49,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
           type="checkbox"
           className="todo__status"
           checked={todo.completed}
-          onChange={() => hangleToggle(todo.id)}
+          onChange={() => handleToggle(todo.id)}
         />
       </label>
 

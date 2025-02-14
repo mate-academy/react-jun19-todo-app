@@ -1,33 +1,19 @@
-import React, { RefObject, useEffect, useState } from 'react';
-import { Todo } from './TodoContext';
+import React, { RefObject, useContext, useEffect, useState } from 'react';
 
 interface HeaderProps {
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
   inputRef: RefObject<HTMLInputElement>;
-  todos: Todo[];
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  setTodos,
-  inputRef,
-  todos,
-}) => {
+export const Header: React.FC<HeaderProps> = ({ inputRef }) => {
   const [title, setTitle] = useState('');
+
+  const todoContext = useContext(TodoContext);
+
+  const { todos, handleAddTodo, setTodos } = todoContext;
 
   useEffect(() => {
     inputRef.current?.focus();
   }, [inputRef]);
-
-  const handleAddTodo = () => {
-    if (title.trim()) {
-      setTodos(prev => [
-        ...prev,
-        { id: Date.now(), title: title.trim(), completed: false },
-      ]);
-      setTitle('');
-      inputRef.current?.focus();
-    }
-  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
