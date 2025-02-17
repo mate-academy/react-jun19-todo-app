@@ -6,6 +6,7 @@ interface TodoItemProps {
   handleEdit: (id: number, title: string) => void;
   handleToggle: (id: number) => void;
   handleDelete: (id: number) => void;
+  inputRef: React.RefObject<HTMLInputElement>;
 }
 
 export const TodoItem: React.FC<TodoItemProps> = ({
@@ -13,6 +14,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   handleDelete,
   handleToggle,
   handleEdit,
+  inputRef,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(todo.title);
@@ -78,7 +80,10 @@ export const TodoItem: React.FC<TodoItemProps> = ({
         type="button"
         className="todo__remove"
         data-cy="TodoDelete"
-        onClick={() => handleDelete(todo.id)}
+        onClick={() => {
+          handleDelete(todo.id);
+          inputRef.current?.focus();
+        }}
       >
         ×
       </button>

@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 export interface Todo {
   id: number;
@@ -22,7 +22,19 @@ export const TodoContext = createContext<TodoContextType | undefined>(
 export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<Todo[]>(() => {
+    const storedTodos = localStorage.getItem('todos');
+
+    return storedTodos ? JSON.parse(storedTodos) : [];
+  });
+
+  useEffect(() => {
+    if (todos.length === 0) {
+      localStorage.removeItem('todos');
+    } else {
+      localStorage.setItem('todos', JSON.stringify(todos));
+    }
+  }, [todos]);
 
   const handleAddTodo = (title: string) => {
     if (title.trim()) {

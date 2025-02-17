@@ -5,9 +5,10 @@ import { TodoContext } from './TodoContext';
 
 interface TodoListProps {
   filter: Status;
+  inputRef: React.RefObject<HTMLInputElement>;
 }
 
-export const TodoList: React.FC<TodoListProps> = ({ filter }) => {
+export const TodoList: React.FC<TodoListProps> = ({ filter, inputRef }) => {
   const todoContext = useContext(TodoContext);
 
   if (!todoContext) {
@@ -32,6 +33,7 @@ export const TodoList: React.FC<TodoListProps> = ({ filter }) => {
     <section className="todoapp__main" data-cy="TodoList">
       {filteredTodos.map(todo => (
         <TodoItem
+          inputRef={inputRef}
           key={todo.id}
           todo={todo}
           handleToggle={handleToggle}
