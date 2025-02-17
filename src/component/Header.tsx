@@ -48,7 +48,7 @@ export const Header: React.FC<HeaderProps> = ({ inputRef }) => {
         <input
           data-cy="NewTodoField"
           type="text"
-          className="todoapp__new-todo"
+          className="todoapp__new-todo focused"
           placeholder="What needs to be done?"
           value={title}
           onChange={e => setTitle(e.target.value)}

@@ -29,11 +29,7 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   useEffect(() => {
-    if (todos.length === 0) {
-      localStorage.removeItem('todos');
-    } else {
-      localStorage.setItem('todos', JSON.stringify(todos));
-    }
+    localStorage.setItem('todos', JSON.stringify(todos.length ? todos : []));
   }, [todos]);
 
   const handleAddTodo = (title: string) => {
@@ -45,12 +41,20 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const handleToggle = (id: number) => {
-    setTodos(prev =>
-      prev.map(todo =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-      ),
-    );
+  const handleToggle = (id?: number) => {
+    if (id !== undefined) {
+      setTodos(prev =>
+        prev.map(todo =>
+          todo.id === id ? { ...todo, completed: !todo.completed } : todo,
+        ),
+      );
+    } else {
+      const allCompleted = todos.every(todo => todo.completed);
+
+      setTodos(prev =>
+        prev.map(todo => ({ ...todo, completed: !allCompleted })),
+      );
+    }
   };
 
   const handleEdit = (id: number, title: string) => {

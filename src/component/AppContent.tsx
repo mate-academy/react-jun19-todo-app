@@ -33,6 +33,7 @@ export const AppContent: React.FC = () => {
             todos={todos}
             clearCompleted={clearCompleted}
             completedCount={todos.filter(todo => todo.completed).length}
+            inputRef={inputRef}
           />
         )}
       </div>

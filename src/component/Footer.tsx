@@ -8,6 +8,7 @@ interface FooterProps {
   setFilter: (filter: Status) => void;
   clearCompleted: () => void;
   completedCount: number;
+  inputRef: React.RefObject<HTMLInputElement>;
 }
 
 export const Footer: React.FC<FooterProps> = ({
@@ -16,7 +17,13 @@ export const Footer: React.FC<FooterProps> = ({
   setFilter,
   clearCompleted,
   completedCount,
+  inputRef,
 }) => {
+  const handleClearCompleted = () => {
+    clearCompleted();
+    inputRef.current?.focus();
+  };
+
   return (
     <footer className="todoapp__footer" data-cy="Footer">
       <span className="todo-count" data-cy="TodosCounter">
@@ -45,7 +52,7 @@ export const Footer: React.FC<FooterProps> = ({
         type="button"
         className="todoapp__clear-completed"
         data-cy="ClearCompletedButton"
-        onClick={clearCompleted}
+        onClick={handleClearCompleted}
         disabled={completedCount === 0}
       >
         Clear completed
