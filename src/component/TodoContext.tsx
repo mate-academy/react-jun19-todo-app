@@ -10,6 +10,7 @@ interface TodoContextType {
   todos: Todo[];
   handleAddTodo: (title: string) => void;
   handleToggle: (id: number) => void;
+  handleToggleAll: () => void;
   handleEdit: (id: number, title: string) => void;
   handleDelete: (id: number) => void;
   clearCompleted: () => void;
@@ -41,20 +42,18 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const handleToggle = (id?: number) => {
-    if (id !== undefined) {
-      setTodos(prev =>
-        prev.map(todo =>
-          todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-        ),
-      );
-    } else {
-      const allCompleted = todos.every(todo => todo.completed);
+  const handleToggle = (id: number) => {
+    setTodos(prev =>
+      prev.map(todo =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
+      ),
+    );
+  };
 
-      setTodos(prev =>
-        prev.map(todo => ({ ...todo, completed: !allCompleted })),
-      );
-    }
+  const handleToggleAll = () => {
+    const allCompleted = todos.every(todo => todo.completed);
+
+    setTodos(prev => prev.map(todo => ({ ...todo, completed: !allCompleted })));
   };
 
   const handleEdit = (id: number, title: string) => {
@@ -77,6 +76,7 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         todos,
         handleAddTodo,
         handleToggle,
+        handleToggleAll, // Provide handleToggleAll
         handleEdit,
         handleDelete,
         clearCompleted,

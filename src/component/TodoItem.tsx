@@ -57,7 +57,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
 
       {isEditing ? (
         <input
-          data-cy="TodoEditField"
+          data-cy="TodoTitleField"
           type="text"
           className="todo__edit"
           value={newTitle}
@@ -76,17 +76,19 @@ export const TodoItem: React.FC<TodoItemProps> = ({
         </span>
       )}
 
-      <button
-        type="button"
-        className="todo__remove"
-        data-cy="TodoDelete"
-        onClick={() => {
-          handleDelete(todo.id);
-          inputRef.current?.focus();
-        }}
-      >
-        ×
-      </button>
+      {!isEditing && (
+        <button
+          type="button"
+          className="todo__remove"
+          data-cy="TodoDelete"
+          onClick={() => {
+            handleDelete(todo.id);
+            inputRef.current?.focus();
+          }}
+        >
+          ×
+        </button>
+      )}
     </div>
   );
 };

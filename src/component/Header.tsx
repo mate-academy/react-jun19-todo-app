@@ -18,7 +18,7 @@ export const Header: React.FC<HeaderProps> = ({ inputRef }) => {
     return null;
   }
 
-  const { todos, handleAddTodo, handleToggle } = todoContext;
+  const { todos, handleAddTodo, handleToggleAll } = todoContext;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,9 +38,7 @@ export const Header: React.FC<HeaderProps> = ({ inputRef }) => {
           type="button"
           className={`todoapp__toggle-all ${allCompleted ? 'active' : ''}`}
           data-cy="ToggleAllButton"
-          onClick={() => {
-            todos.forEach(todo => handleToggle(todo.id));
-          }}
+          onClick={handleToggleAll}
         />
       )}
 
