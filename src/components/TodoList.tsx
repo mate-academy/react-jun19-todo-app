@@ -8,7 +8,7 @@ export const TodoList = () => {
   const { todos, filterBy } = useContext(TodoContext);
 
   return (
-    <div data-cy="Todo" className="todo">
+    <section className="todoapp__main" data-cy="TodoList">
       {todos.map((todo: Todo) => {
         if (FilterBy[filterBy] === 'ACTIVE' && !todo.completed) {
           return <TodoItem key={todo.id} item={todo} />;
@@ -24,6 +24,6 @@ export const TodoList = () => {
 
         return;
       })}
-    </div>
+    </section>
   );
 };

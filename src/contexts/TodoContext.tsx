@@ -9,10 +9,10 @@ type TodoProviderProps = {
 
 export const TodoContext = createContext<TodoContextProps>({
   todos: [] as Todo[],
-  setTodos: (todos: Todo[]) => todos,
+  setTodos: () => {},
   title: '',
   setTitle: () => {},
-  activeItem: '',
+  activeItem: '#/',
   setActiveItem: () => {},
   filterBy: FilterBy.ALL,
   setFilterBy: () => {},
@@ -25,21 +25,23 @@ export const TodoProvider = ({ children }: TodoProviderProps) => {
   const [activeItem, setActiveItem] = useState('#/');
   const [filterBy, setFilterBy] = useState<FilterBy>(FilterBy.ALL);
   const [disabled, setDisabled] = useState<boolean>(
-    todos.every(todo => todo.completed === false),
+    todos.every(todo => !todo.completed),
   );
 
   const getItems = useCallback(() => {
-    const mateTodos = localStorage.getItem('#mate/todos');
+    const savedTodos = localStorage.getItem('todos');
 
-    if (mateTodos) {
+    if (savedTodos) {
       try {
-        return setTodos([...JSON.parse(mateTodos)]);
-      } catch (e) {
-        return setTodos([]);
-      }
-    }
+        const parsedTodos = JSON.parse(savedTodos);
 
-    return localStorage.setItem('#mate/todos', JSON.stringify([] as Todo[]));
+        setTodos(parsedTodos);
+      } catch {
+        setTodos([]);
+      }
+    } else {
+      localStorage.setItem('todos', JSON.stringify([]));
+    }
   }, []);
 
   useEffect(() => {
@@ -47,8 +49,8 @@ export const TodoProvider = ({ children }: TodoProviderProps) => {
   }, [getItems]);
 
   useEffect(() => {
-    setDisabled(todos.some(todo => todo.completed !== false));
-    localStorage.setItem('#mate/todos', JSON.stringify(todos));
+    setDisabled(!todos.some(todo => todo.completed));
+    localStorage.setItem('todos', JSON.stringify(todos));
   }, [todos]);
 
   return (
