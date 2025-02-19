@@ -129,7 +129,7 @@ export const App: React.FC = () => {
         {todos.length !== 0 && (
           <footer className="todoapp__footer" data-cy="Footer">
             <span className="todo-count" data-cy="TodosCounter">
-              {todos.length} items left
+              {todos.filter(todo => !todo.completed).length} items left
             </span>
 
             {/* Active link should have the 'selected' class */}
@@ -140,7 +140,7 @@ export const App: React.FC = () => {
               type="button"
               className="todoapp__clear-completed"
               data-cy="ClearCompletedButton"
-              disabled={disabled}
+              disabled={!disabled}
               onClick={handleClearCompleted}
             >
               Clear completed

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { navigationItems, NavItem } from '../common/navItems';
-import { FilterBy, TodoContext } from '../contexts/TodoContext';
+import { TodoContext } from '../contexts/TodoContext';
+import { FilterBy } from '../types/FilterBy';
 
 export const Navitagion: React.FC = () => {
   const { activeItem, setActiveItem, setFilterBy } = useContext(TodoContext);
