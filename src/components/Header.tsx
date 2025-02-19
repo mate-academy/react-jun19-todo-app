@@ -11,7 +11,16 @@ export const Header = () => {
   }, [todos]);
 
   const handleChangeAllStatus = () => {
-    setTodos(todos.map(todo => ({ ...todo, completed: !todo.completed })));
+    const hasActiveTodo = todos.some(todo => !todo.completed);
+
+    setTodos(
+      todos.map(todo => {
+        return {
+          ...todo,
+          completed: hasActiveTodo,
+        };
+      }),
+    );
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -23,7 +32,7 @@ export const Header = () => {
 
     const newTodo: Todo = {
       id: +new Date(),
-      title,
+      title: title.trim(),
       completed: false,
     };
 
