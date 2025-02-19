@@ -1,30 +1,7 @@
-import React, { createContext, useState } from 'react';
-
-export type Todo = {
-  id: number;
-  title: string;
-  completed: boolean;
-};
-
-export enum FilterBy {
-  ALL = 0,
-  ACTIVE = 1,
-  COMPLETED = 2,
-}
-
-type TodoContextProps = {
-  todos: Todo[];
-  setTodos: (todos: Todo[]) => void;
-  title: string;
-  setTitle: (title: string) => void;
-  activeItem: string;
-  setActiveItem: (activeItem: string) => void;
-  filterBy: FilterBy;
-  setFilterBy: (filterBy: FilterBy) => void;
-  checked: boolean;
-  setChecked: (checked: boolean) => void;
-  disabled: boolean;
-};
+import React, { createContext, useEffect, useState } from 'react';
+import { FilterBy } from '../types/FilterBy';
+import { Todo } from '../types/Todo';
+import { TodoContextProps } from '../types/TodoContextProps';
 
 type TodoProviderProps = {
   children: React.ReactNode;
@@ -39,8 +16,6 @@ export const TodoContext = createContext<TodoContextProps>({
   setActiveItem: () => {},
   filterBy: FilterBy.ALL,
   setFilterBy: () => {},
-  checked: false,
-  setChecked: () => {},
   disabled: true,
 });
 
@@ -49,8 +24,13 @@ export const TodoProvider = ({ children }: TodoProviderProps) => {
   const [title, setTitle] = useState('');
   const [activeItem, setActiveItem] = useState('#/');
   const [filterBy, setFilterBy] = useState<FilterBy>(FilterBy.ALL);
-  const [checked, setChecked] = useState<boolean>(false);
-  const [disabled] = useState<boolean>(todos.length === 0);
+  const [disabled, setDisabled] = useState<boolean>(
+    todos.find(todo => todo.completed !== false) ? false : true,
+  );
+
+  useEffect(() => {
+    setDisabled(todos.find(todo => todo.completed !== false) ? false : true);
+  }, [todos]);
 
   return (
     <TodoContext.Provider
@@ -63,8 +43,6 @@ export const TodoProvider = ({ children }: TodoProviderProps) => {
         setActiveItem,
         filterBy,
         setFilterBy,
-        checked,
-        setChecked,
         disabled,
       }}
     >

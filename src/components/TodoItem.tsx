@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
-import { Todo, TodoContext } from '../contexts/TodoContext';
+import { TodoContext } from '../contexts/TodoContext';
+import { Todo } from '../types/Todo';
 
 type TodoItemProps = {
   item: Todo;
 };
 
 export const TodoItem = ({ item }: TodoItemProps) => {
-  const { todos, setTodos, checked, setChecked } = useContext(TodoContext);
+  const { todos, setTodos } = useContext(TodoContext);
 
   const handleRemoveTodo = (id: number) => {
     const removeTodo = todos.filter((todo: Todo) => todo.id !== id);
@@ -22,7 +23,6 @@ export const TodoItem = ({ item }: TodoItemProps) => {
     }
 
     if (id === findTodo.id) {
-      setChecked(!checked);
       Object.assign(findTodo, {
         completed: !findTodo.completed,
       });
@@ -30,6 +30,8 @@ export const TodoItem = ({ item }: TodoItemProps) => {
       setTodos([...todos]);
     }
   };
+
+  // console.log(item.completed);
 
   return (
     <>
@@ -40,8 +42,8 @@ export const TodoItem = ({ item }: TodoItemProps) => {
         <input
           data-cy="TodoStatus"
           type="checkbox"
-          className={`todo__status ${checked && 'completed'}`}
-          checked={checked}
+          className={`todo__status ${item.completed && 'completed'}`}
+          checked={item.completed}
           onChange={() => handleChecked(item.id)}
         />
       </label>

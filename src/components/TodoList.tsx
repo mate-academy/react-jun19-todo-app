@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
-import { FilterBy, Todo, TodoContext } from '../contexts/TodoContext';
+import { TodoContext } from '../contexts/TodoContext';
+import { FilterBy } from '../types/FilterBy';
+import { Todo } from '../types/Todo';
 import { TodoItem } from './TodoItem';
 
 export const TodoList = () => {

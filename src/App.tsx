@@ -2,7 +2,8 @@
 import React, { useContext } from 'react';
 import { Navitagion } from './components/Navigation';
 import { TodoList } from './components/TodoList';
-import { Todo, TodoContext } from './contexts/TodoContext';
+import { TodoContext } from './contexts/TodoContext';
+import { Todo } from './types/Todo';
 
 export const App: React.FC = () => {
   const { title, todos, setTodos, setTitle, disabled } =
@@ -34,7 +35,7 @@ export const App: React.FC = () => {
   };
 
   const handleClearCompleted = () => {
-    const clearCompleted = todos.filter(todo => todo.completed !== false);
+    const clearCompleted = todos.filter(todo => !todo.completed);
 
     setTodos(clearCompleted);
   };
@@ -74,8 +75,6 @@ export const App: React.FC = () => {
         </header>
 
         <section className="todoapp__main" data-cy="TodoList">
-          {/* This is a completed todo */}
-          {/* This todo is an active todo */}
           <TodoList />
 
           {/* This todo is being edited */}
@@ -83,13 +82,13 @@ export const App: React.FC = () => {
             {/*
             eslint-disable-next-line jsx-a11y/label-has-associated-control
             */}
-            <label className="todo__status-label">
+            {/* <label className="todo__status-label">
               <input
                 data-cy="TodoStatus"
                 type="checkbox"
                 className="todo__status"
               />
-            </label>
+            </label> */}
 
             {/* This form is shown instead of the title and remove button */}
             {/* <form>
@@ -104,11 +103,11 @@ export const App: React.FC = () => {
           </div>
 
           {/* This todo is in loadind state */}
-          <div data-cy="Todo" className="todo">
-            {/*
+          {/* <div data-cy="Todo" className="todo"> */}
+          {/*
             eslint-disable-next-line jsx-a11y/label-has-associated-control
             */}
-            <label className="todo__status-label">
+          {/* <label className="todo__status-label">
               <input
                 data-cy="TodoStatus"
                 type="checkbox"
@@ -118,12 +117,12 @@ export const App: React.FC = () => {
 
             <span data-cy="TodoTitle" className="todo__title">
               Todo is being saved now
-            </span>
+            </span> */}
 
-            <button type="button" className="todo__remove" data-cy="TodoDelete">
+          {/* <button type="button" className="todo__remove" data-cy="TodoDelete">
               ×
-            </button>
-          </div>
+            </button> */}
+          {/* </div> */}
         </section>
 
         {/* Hide the footer if there are no todos */}
