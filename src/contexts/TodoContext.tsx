@@ -24,9 +24,7 @@ export const TodoProvider = ({ children }: TodoProviderProps) => {
   const [title, setTitle] = useState('');
   const [activeItem, setActiveItem] = useState('#/');
   const [filterBy, setFilterBy] = useState<FilterBy>(FilterBy.ALL);
-  const [disabled, setDisabled] = useState<boolean>(
-    todos.every(todo => !todo.completed),
-  );
+  const [disabled, setDisabled] = useState<boolean>(true);
 
   const getItems = useCallback(() => {
     const savedTodos = localStorage.getItem('todos');

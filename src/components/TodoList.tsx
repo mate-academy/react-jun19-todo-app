@@ -21,8 +21,6 @@ export const TodoList = () => {
         if (FilterBy[filterBy] === 'ALL') {
           return <TodoItem key={todo.id} item={todo} />;
         }
-
-        return;
       })}
     </section>
   );

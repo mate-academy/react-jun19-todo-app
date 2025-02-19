@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { TodoContext } from '../contexts/TodoContext';
 import { Todo } from '../types/Todo';
-import { Navitagion } from './Navigation';
+import { Navigation } from './Navigation';
 
 export const Footer = () => {
   const { todos, setTodos, disabled } = useContext(TodoContext);
@@ -20,7 +20,7 @@ export const Footer = () => {
         {remainingItemsCount} items left
       </span>
 
-      <Navitagion />
+      <Navigation />
 
       <button
         type="button"

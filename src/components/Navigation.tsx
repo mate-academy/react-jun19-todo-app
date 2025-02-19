@@ -3,7 +3,7 @@ import { navigationItems, NavItem } from '../common/navItems';
 import { TodoContext } from '../contexts/TodoContext';
 import { FilterBy } from '../types/FilterBy';
 
-export const Navitagion: React.FC = () => {
+export const Navigation: React.FC = () => {
   const { activeItem, setActiveItem, setFilterBy } = useContext(TodoContext);
 
   const handleFilterBy = (item: string) => {

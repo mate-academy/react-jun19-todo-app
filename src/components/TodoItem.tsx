@@ -27,24 +27,19 @@ export const TodoItem = ({ item }: TodoItemProps) => {
 
   const handleTodoTitleChange = (e: React.FormEvent) => {
     e.preventDefault();
-
     const trimmedTitle = editingTitle.trim();
 
-    if (trimmedTitle !== item.title) {
-      const updatedTodo = todos.find((todo: Todo) => todo.id === item.id);
-
-      if (updatedTodo) {
-        updatedTodo.title = trimmedTitle;
-        setTodos([...todos]);
-      }
-    }
-
     if (trimmedTitle === '') {
-      const noEmptyTodo = todos.filter(todo => todo.id !== item.id);
+      handleRemoveTodo(item.id);
 
-      setTodos(noEmptyTodo);
+      return;
     }
 
+    const updatedTodos = todos.map((todo: Todo) =>
+      todo.id === item.id ? { ...todo, title: trimmedTitle } : todo,
+    );
+
+    setTodos(updatedTodos);
     setIsEditing(false);
   };
 

@@ -11,13 +11,13 @@ export const Header = () => {
   }, [todos]);
 
   const handleChangeAllStatus = () => {
-    const hasActiveTodo = todos.some(todo => !todo.completed);
+    const allCompleted = todos.every(todo => todo.completed);
 
     setTodos(
       todos.map(todo => {
         return {
           ...todo,
-          completed: hasActiveTodo,
+          completed: !allCompleted,
         };
       }),
     );
